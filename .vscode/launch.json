@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Debug Client",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}",
+      "internalConsoleOptions": "openOnFirstSessionStart"
+    }
+  ]
+}
