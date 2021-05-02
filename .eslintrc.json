@@ -23,12 +23,14 @@
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/react-in-jsx-scope": "off",
+    "no-unused-vars": "off",
     "react/jsx-filename-extension": [
       "warn",
       {
         "extensions": [".tsx"]
       }
     ],
+    "import/prefer-default-export": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
