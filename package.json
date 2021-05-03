@@ -20,7 +20,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "commit:cz": "exec < /dev/tty && git cz --hook || true"
+    "commit:cz": "exec < /dev/tty && git cz --hook || true",
+    "storybook": "start-storybook -p 6006 -s public --no-manager-cache",
+    "build-storybook": "build-storybook -s public"
   },
   "lint-staged": {
     "*.ts(x)": "eslint --fix src/*"
@@ -38,6 +40,14 @@
     ]
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/addons": "^6.2.9",
+    "@storybook/node-logger": "^6.2.9",
+    "@storybook/preset-create-react-app": "^3.1.7",
+    "@storybook/react": "^6.2.9",
+    "@storybook/theming": "^6.2.9",
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.9",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -58,5 +68,20 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "resolutions": {
+    "babel-loader": "8.1.0"
+  },
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   }
 }
