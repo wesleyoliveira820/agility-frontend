@@ -46,6 +46,7 @@ Neste repositório contém o frontend de um sistema de gerenciamento de tarefas 
 
 * [Typescript](https://www.typescriptlang.org/)
 * [ReactJS](https://reactjs.org/)
+* [Storybook](https://storybook.js.org/)
 * [Styled components](https://styled-components.com/)
 * [Node.JS](https://nodejs.org/en/)
 
