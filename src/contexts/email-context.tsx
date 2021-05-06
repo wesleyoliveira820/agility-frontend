@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 interface IContextProps {
   email: string;
   handleEmail: (emailAddress: string) => void;
+  clearEmail: () => void;
 }
 
 interface IContext {
@@ -28,8 +29,12 @@ function EmailProvider({ children }: IContext) {
     history.push('/register');
   }
 
+  function clearEmail() {
+    setEmail('');
+  }
+
   return (
-    <EmailContext.Provider value={{ email, handleEmail }}>
+    <EmailContext.Provider value={{ email, handleEmail, clearEmail }}>
       { children }
     </EmailContext.Provider>
   );

@@ -7,6 +7,9 @@
     "plugin:react/recommended",
     "airbnb"
   ],
+  "globals":{
+    "JSX": true
+  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -25,7 +28,10 @@
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
+    "no-param-reassign": "off",
     "no-unused-vars": "off",
+    "camelcase": "off",
+    "consistent-return": "off",
     "react/jsx-filename-extension": [
       "warn",
       {

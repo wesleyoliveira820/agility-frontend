@@ -25,11 +25,14 @@ export default createGlobalStyle`
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Roboto', sans-serif;
     font-weight: normal;
+    color: ${(props) => props.theme.colors.text.primary};
   }
 
   p, strong, span {
     font-family: 'Open Sans', sans-serif;
     font-weight: normal;
+    letter-spacing: -0.02em;
+    color: ${(props) => props.theme.colors.text.primary};
   }
 
   button {
