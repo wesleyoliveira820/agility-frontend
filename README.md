@@ -33,7 +33,7 @@ Neste repositório contém o frontend de um sistema de gerenciamento de tarefas 
 ### Funcionalidades
 
 - [x] Landing page
-- [ ] Tela de cadastro
+- [x] Tela de cadastro
 - [ ] Tela de Login
 - [ ] Telas de recuperação de senha
 - [ ] Dashboard de projetos
