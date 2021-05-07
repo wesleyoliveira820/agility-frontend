@@ -34,6 +34,7 @@ Neste repositório contém o frontend de um sistema de gerenciamento de tarefas 
 
 - [x] Landing page
 - [x] Tela de cadastro
+- [x] Verificação de email
 - [ ] Tela de Login
 - [ ] Telas de recuperação de senha
 - [ ] Dashboard de projetos
