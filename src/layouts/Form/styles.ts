@@ -21,6 +21,7 @@ export const Container = styled.div`
 
     p {
       font-size: 14px;
+      line-height: 22px;
       color: ${(props) => props.theme.colors.text.secondary};
     }
   }
@@ -31,6 +32,21 @@ export const Container = styled.div`
 
     background-color: #FDE3E5;
     border: 1px solid ${(props) => props.theme.colors.helpers.error};
+
+    p {
+      color: ${(props) => props.theme.colors.text.primary};
+      font-size: 14px;
+      font-weight: 5  00;
+      text-align: center;
+    }
+  }
+
+  #box-form-success {
+    margin: -12px 0 16px;
+    padding: 16px;
+
+    background-color: #E3FDEC;
+    border: 1px solid ${(props) => props.theme.colors.helpers.success};
 
     p {
       color: ${(props) => props.theme.colors.text.primary};
@@ -54,6 +70,11 @@ export const Container = styled.div`
   }
 
   footer {
+    #link {
+      text-align: center;
+      margin-top: 24px;
+    }
+
     #link-with-text {
       font-size: 14px;
       text-align: center;
