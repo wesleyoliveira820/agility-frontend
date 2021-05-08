@@ -43,6 +43,7 @@ function InputText({
         ref={inputRef}
         defaultValue={defaultValue}
         spellCheck={spellCheck}
+        name={name}
         {...rest}
       />
       {error && <strong className="error-text">{error}</strong>}

@@ -17,20 +17,19 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   padding-bottom: 32px;
+  height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  #body-content-bg {
-    width: 100%;
-    height: 245px;
+  :after {
+    content: "";
     background-color: ${(props) => props.theme.colors.brand.primary};
-  }
-
-  #body-padding-content {
-    width: 100%;
-    padding: 0 16px;
-    background: 0;
-
-    > div {
-      margin: -245px auto 0;
-    }
+    position: absolute;
+    top: 0;
+    bottom: 50%;
+    left: 0;
+    right: 0;
+    z-index: -9999999;
   }
 `;

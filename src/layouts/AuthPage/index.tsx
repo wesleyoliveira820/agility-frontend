@@ -16,10 +16,7 @@ function AuthPage({ children }: IAuthPageProps) {
         </div>
       </header>
       <Content>
-        <main id="body-content-bg" />
-        <div id="body-padding-content">
-          {children}
-        </div>
+        {children}
       </Content>
     </Container>
   );
