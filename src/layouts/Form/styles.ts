@@ -26,36 +26,6 @@ export const Container = styled.div`
     }
   }
 
-  #box-form-error {
-    margin: -12px 0 16px;
-    padding: 16px;
-
-    background-color: #FDE3E5;
-    border: 1px solid ${(props) => props.theme.colors.helpers.error};
-
-    p {
-      color: ${(props) => props.theme.colors.text.primary};
-      font-size: 14px;
-      font-weight: 5  00;
-      text-align: center;
-    }
-  }
-
-  #box-form-success {
-    margin: -12px 0 16px;
-    padding: 16px;
-
-    background-color: #E3FDEC;
-    border: 1px solid ${(props) => props.theme.colors.helpers.success};
-
-    p {
-      color: ${(props) => props.theme.colors.text.primary};
-      font-size: 14px;
-      font-weight: 5  00;
-      text-align: center;
-    }
-  }
-
   > form {
     display: flex;
     flex-direction: column;

@@ -15,6 +15,7 @@ import axios from '../../services/api';
 import AuthPageLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
+import MessageBox from '../../layouts/Form/MessageBox';
 
 interface IFormProps {
   name: string;
@@ -115,9 +116,7 @@ function Register() {
           </header>
 
           {formError && (
-            <div id="box-form-error">
-              <p>{formError}</p>
-            </div>
+            <MessageBox type="error" text={formError} />
           )}
 
           <Form ref={formRef} onSubmit={onSubmitForm}>

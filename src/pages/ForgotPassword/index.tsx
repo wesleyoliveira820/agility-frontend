@@ -12,6 +12,7 @@ import Button from '../../components/Button';
 import AuthLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
+import MessageBox from '../../layouts/Form/MessageBox';
 
 interface IErrorStatus {
   [key: number]: string;
@@ -68,15 +69,11 @@ function ForgotPassword() {
           </header>
 
           {errorForm && (
-            <div id="box-form-error">
-              <p>{errorForm}</p>
-            </div>
+            <MessageBox type="error" text={errorForm} />
           )}
 
           {successForm && (
-          <div id="box-form-success">
-            <p>{successForm}</p>
-          </div>
+            <MessageBox type="success" text={successForm} />
           )}
 
           <Form onSubmit={onSubmitForm}>

@@ -7,11 +7,13 @@ import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import InputText from '../../components/InputText';
 
+import { loginValidator } from '../../validators/login';
+import { useAuth } from '../../contexts/auth-context';
+
 import AuthPageLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
-import { loginValidator } from '../../validators/login';
-import { useAuth } from '../../contexts/auth-context';
+import MessageBox from '../../layouts/Form/MessageBox';
 
 interface IFormProps {
   email: string;
@@ -68,9 +70,7 @@ function Login() {
           </header>
 
           {formError && (
-            <div id="box-form-error">
-              <p>{formError}</p>
-            </div>
+            <MessageBox type="error" text={formError} />
           )}
 
           <Form onSubmit={onSubmitForm}>
