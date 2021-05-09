@@ -36,7 +36,7 @@ Neste repositório contém o frontend de um sistema de gerenciamento de tarefas 
 - [x] Tela de cadastro
 - [x] Verificação de email
 - [x] Tela de Login
-- [ ] Telas de recuperação de senha
+- [x] Telas de recuperação de senha
 - [ ] Dashboard de projetos
 - [ ] Tela de kanban do projeto
 - [ ] Tela de configurações
