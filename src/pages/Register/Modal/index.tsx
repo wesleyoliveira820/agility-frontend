@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import LottiePlayer from 'react-lottie-player';
-import { Animated } from 'react-animated-css';
+import { motion } from 'framer-motion';
 
 import { Container, ModalContainer } from './styles';
 import checkAnimation from '../../../assets/register/check-animation.json';
@@ -8,7 +8,10 @@ import checkAnimation from '../../../assets/register/check-animation.json';
 function Modal() {
   return (
     <Container>
-      <Animated animationIn="bounceIn" animationOut="bounceOut" isVisible>
+      <motion.div
+        animate={{ scale: [0.5, 1] }}
+        transition={{ duration: 0.5 }}
+      >
         <ModalContainer>
           <LottiePlayer
             animationData={checkAnimation}
@@ -22,7 +25,7 @@ function Modal() {
             <button type="button">Entendi!</button>
           </Link>
         </ModalContainer>
-      </Animated>
+      </motion.div>
     </Container>
   );
 }
