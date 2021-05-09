@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Form } from '@unform/web';
-import { SubmitHandler } from '@unform/core';
+import { FormHandles, SubmitHandler } from '@unform/core';
 import { AxiosError } from 'axios';
 
 import axios from '../../services/api';
@@ -19,6 +19,7 @@ interface IErrorStatus {
 }
 
 function ForgotPassword() {
+  const formRef = useRef<FormHandles>(null);
   const [errorForm, setErrorForm] = useState('');
   const [successForm, setSuccessForm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +30,7 @@ function ForgotPassword() {
 
       setSuccessForm('Seu pedido foi enviado! Verifique seu email!');
 
-      return;
+      return true;
     } catch (_error) {
       const { response }: AxiosError = _error;
 
@@ -39,7 +40,8 @@ function ForgotPassword() {
         500: 'Desculpe, houve um erro interno no servidor.',
       };
 
-      return setErrorForm(errors[response?.status || 500]);
+      setErrorForm(errors[response?.status || 500]);
+      return false;
     }
   }
 
@@ -51,7 +53,13 @@ function ForgotPassword() {
 
     setIsLoading(true);
 
-    await sendEmailToApi(email);
+    const sendEmail = await sendEmailToApi(email);
+
+    if (!sendEmail) {
+      return setIsLoading(false);
+    }
+
+    formRef.current?.reset();
 
     setIsLoading(false);
   };
@@ -76,7 +84,7 @@ function ForgotPassword() {
             <MessageBox type="success" text={successForm} />
           )}
 
-          <Form onSubmit={onSubmitForm}>
+          <Form ref={formRef} onSubmit={onSubmitForm}>
             <InputText type="email" name="email" placeholder="email" />
             <Button
               type="submit"
