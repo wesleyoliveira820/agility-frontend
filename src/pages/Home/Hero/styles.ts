@@ -86,8 +86,14 @@ export const Form = styled.form`
     border-bottom-right-radius: 5px;
 
     font-size: 16px;
-    color: #064D30;
+    color: #023822;
 
-    background-color: #70FF00;
+    background-color: #00DF60;
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #02D35C;
+    }
   }
 `;
