@@ -46,7 +46,7 @@ function ResetPassword() {
   async function resetPasswordInApi(payload: IFormProps) {
     const queryCode = new URLSearchParams(location.search).get('code');
 
-    if (!queryCode || queryCode.length !== 8) {
+    if (!queryCode) {
       setFormError('Este link de recuperação é inválido.');
       return false;
     }

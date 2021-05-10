@@ -16,8 +16,8 @@ function EmailVerification() {
   async function emailVerificationRequest() {
     const queryCode = new URLSearchParams(location.search).get('code');
 
-    if (!queryCode || queryCode.length !== 8) {
-      setError('O código de verificação não existe ou é inválido.');
+    if (!queryCode) {
+      setError('O código de verificação não existe.');
       return;
     }
 
