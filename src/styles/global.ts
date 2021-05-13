@@ -17,7 +17,6 @@ export default createGlobalStyle`
     color: ${(props) => props.theme.colors.text.primary};
 
     font-size: 16px;
-    line-height: 24px;
 
     -webkit-font-smoothing: antialiased !important;
   }
@@ -46,6 +45,11 @@ export default createGlobalStyle`
   }
 
   input {
-    font-family: 'Open Sans', sans-serif
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  textarea {
+    font-family: 'Open Sans', sans-serif;
+    resize: none;
   }
 `;

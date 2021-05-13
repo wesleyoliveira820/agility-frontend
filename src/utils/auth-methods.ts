@@ -2,6 +2,8 @@ interface IUserProps {
   id: string;
   name: string;
   email: string;
+  initial_name: string;
+  color_name: string;
 }
 
 export function isLogged() {
@@ -15,7 +17,12 @@ export function setToken(token: string) {
 
 export function getToken() {
   const token = localStorage.getItem('@agility:token');
-  return token;
+
+  if (!token) {
+    return null;
+  }
+
+  return `Bearer ${token}`;
 }
 
 export function storeUser(userPayload: IUserProps) {

@@ -6,7 +6,7 @@ import {
   useCallback,
 } from 'react';
 
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import axios from '../services/api';
 import { setToken, storeUser, getUser } from '../utils/auth-methods';
@@ -20,6 +20,8 @@ interface IUserProps {
   id: string;
   name: string;
   email: string;
+  initial_name: string;
+  color_name: string;
 }
 
 type ResponseLogin = { error: string } | undefined;
@@ -27,6 +29,11 @@ type ResponseLogin = { error: string } | undefined;
 interface IContextProps {
   user: IUserProps;
   login: (userPayload: IAuthProps) => Promise<ResponseLogin>;
+}
+
+interface IResponseApiProps {
+  token: string;
+  user: IUserProps;
 }
 
 interface IContext {
@@ -44,7 +51,7 @@ function AuthProvider({ children }: IContext) {
 
   const login = useCallback(async (userPayload: IAuthProps): Promise<ResponseLogin> => {
     try {
-      const response = await axios.post('auth/login', userPayload);
+      const response: AxiosResponse<IResponseApiProps> = await axios.post('auth/login', userPayload);
 
       setUser(response.data.user);
 
@@ -76,9 +83,7 @@ function AuthProvider({ children }: IContext) {
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-
-  return context;
+  return useContext(AuthContext);
 }
 
 export default AuthProvider;

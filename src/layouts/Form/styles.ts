@@ -40,15 +40,20 @@ export const Container = styled.div`
   }
 
   footer {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+
     #link {
-      text-align: center;
-      margin-top: 24px;
     }
 
     #link-with-text {
       font-size: 14px;
-      text-align: center;
-      margin-top: 24px;
+    }
+
+    #button-close {
+      color: ${(props) => props.theme.colors.helpers.error};
+      font-size: 14px;
     }
   }
 `;
