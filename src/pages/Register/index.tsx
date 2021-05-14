@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { FormHandles, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
-import { AxiosError } from 'axios';
+
+import type { FormHandles, SubmitHandler } from '@unform/core';
+import type { AxiosError } from 'axios';
 
 import InputText from '../../components/InputText';
 import Button from '../../components/Button';
@@ -15,6 +16,7 @@ import axios from '../../services/api';
 import AuthPageLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
+import formatApiValidations from '../../utils/validators';
 
 interface IFormProps {
   name: string;
@@ -29,14 +31,9 @@ interface IApiValidationProps {
   validation: string;
 }
 
-type FormErrorsFormatted = {
-  [x: string]: string
-};
-
 function Register() {
   const formRef = useRef<FormHandles>(null);
-  const { clearEmail } = useEmail();
-  const { email } = useEmail();
+  const { email, clearEmail } = useEmail();
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -53,16 +50,6 @@ function Register() {
     return true;
   }
 
-  function formatApiErrors(formErrors: IApiValidationProps[]) {
-    const errors: FormErrorsFormatted = {};
-
-    formErrors.forEach(({ field, message }) => {
-      errors[field] = message;
-    });
-
-    return errors;
-  }
-
   async function registerUserInAPI(userPayload: IFormProps) {
     try {
       await axios.post('users', userPayload);
@@ -71,8 +58,8 @@ function Register() {
     } catch (_error) {
       const { response }: AxiosError<IApiValidationProps[]> = _error;
 
-      if (response?.data[0].message) {
-        const errors = formatApiErrors(response.data);
+      if (response?.data[0]?.message) {
+        const errors = formatApiValidations(response.data);
         formRef.current?.setErrors(errors);
       }
 

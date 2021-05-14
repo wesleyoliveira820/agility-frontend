@@ -9,7 +9,12 @@ import {
 import { AxiosError, AxiosResponse } from 'axios';
 
 import axios from '../services/api';
-import { setTokens, storeUser, getUser } from '../utils/auth-methods';
+
+import {
+  setTokens,
+  storeUser,
+  getUser,
+} from '../utils/auth-methods';
 
 interface IAuthProps {
   email: string;
@@ -24,7 +29,7 @@ interface IUserProps {
   color_name: string;
 }
 
-type ResultLogin = { error: string } | undefined;
+type ResultLogin = { message?: string } | undefined;
 
 interface IContextProps {
   user: IUserProps;
@@ -39,10 +44,6 @@ interface IResponseApiProps {
 
 interface IContext {
   children: ReactNode;
-}
-
-interface IErrorStatus {
-  [key: number]: string;
 }
 
 type LoginAxiosResponse = AxiosResponse<IResponseApiProps>;
@@ -66,17 +67,12 @@ function AuthProvider({ children }: IContext) {
 
       return;
     } catch (_error) {
-      const { response }: AxiosError = _error;
+      const { response }: AxiosError<{ message?: string }> = _error;
+      if (response?.status === 401) {
+        return { message: 'Email ou senha estão incorretos.' };
+      }
 
-      const errors: IErrorStatus = {
-        401: 'Email ou senha estão incorretos.',
-        403: 'Verifique sua conta para fazer login.',
-        500: 'Desculpe, houve um erro interno no servidor.',
-      };
-
-      return {
-        error: errors[response?.status || 500],
-      };
+      if (response?.data.message) return response?.data;
     }
   }, []);
 
