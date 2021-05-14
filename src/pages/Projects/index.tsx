@@ -59,7 +59,7 @@ function Projects() {
     } catch (_error) {
       const { response }: AxiosError<IApiErrorResponse[]> = _error;
 
-      if (response?.data[0].message) {
+      if (response?.data[0]?.message) {
         const { field, message } = response.data[0];
         return setFormError({ [field]: message });
       }

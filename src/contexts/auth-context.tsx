@@ -9,7 +9,7 @@ import {
 import { AxiosError, AxiosResponse } from 'axios';
 
 import axios from '../services/api';
-import { setToken, storeUser, getUser } from '../utils/auth-methods';
+import { setTokens, storeUser, getUser } from '../utils/auth-methods';
 
 interface IAuthProps {
   email: string;
@@ -24,15 +24,16 @@ interface IUserProps {
   color_name: string;
 }
 
-type ResponseLogin = { error: string } | undefined;
+type ResultLogin = { error: string } | undefined;
 
 interface IContextProps {
   user: IUserProps;
-  login: (userPayload: IAuthProps) => Promise<ResponseLogin>;
+  login: (userPayload: IAuthProps) => Promise<ResultLogin>;
 }
 
 interface IResponseApiProps {
   token: string;
+  refresh_token: string;
   user: IUserProps;
 }
 
@@ -44,20 +45,24 @@ interface IErrorStatus {
   [key: number]: string;
 }
 
+type LoginAxiosResponse = AxiosResponse<IResponseApiProps>;
+
 const AuthContext = createContext({} as IContextProps);
 
 function AuthProvider({ children }: IContext) {
   const [user, setUser] = useState(() => getUser() || {} as IUserProps);
 
-  const login = useCallback(async (userPayload: IAuthProps): Promise<ResponseLogin> => {
+  const login = useCallback(async (userPayload: IAuthProps): Promise<ResultLogin> => {
     try {
-      const response: AxiosResponse<IResponseApiProps> = await axios.post('auth/login', userPayload);
+      const response: LoginAxiosResponse = await axios.post('auth/login', userPayload);
 
-      setUser(response.data.user);
+      const { user: profile, token, refresh_token } = response.data;
 
-      setToken(response.data.token);
+      setUser(profile);
 
-      storeUser(response.data.user);
+      setTokens(token, refresh_token);
+
+      storeUser(profile);
 
       return;
     } catch (_error) {
