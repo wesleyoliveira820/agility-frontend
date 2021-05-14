@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-
 import type { AxiosError } from 'axios';
+
 import axios from '../../services/api';
 import { createProjectValidator } from '../../validators/project';
 
@@ -10,6 +10,7 @@ import Button from '../../components/Button';
 import Form from './Form';
 import ProjectCard from './ProjectCard';
 import ModalForm from './ModalForm';
+import ProjectSkeleton from './ProjectSkeleton';
 
 import { ProjectContainer, ProjectContent } from './styles';
 
@@ -29,6 +30,7 @@ interface IFormErrorProps {
 }
 
 interface IApiErrorResponse {
+  field: string;
   message: string;
 }
 
@@ -36,18 +38,20 @@ function Projects() {
   const [projects, setProjects] = useState<IProjectProps[]>([]);
   const [formError, setFormError] = useState<IFormErrorProps>({});
   const [showModal, setShowModal] = useState(false);
+  const [notHasProjects, setNoHasProjects] = useState(false);
 
   async function validateFormData(projectPayload: IFormProps) {
     const validation = await createProjectValidator(projectPayload);
 
     if (validation) {
-      return setFormError(validation);
+      setFormError(validation);
+      return false;
     }
 
     return true;
   }
 
-  async function createProjectInApi(projectPayload: IFormProps) {
+  async function createProjectInApi(projectPayload: IFormProps): Promise<IProjectProps | void> {
     try {
       const response = await axios.post('projects', projectPayload);
 
@@ -55,8 +59,9 @@ function Projects() {
     } catch (_error) {
       const { response }: AxiosError<IApiErrorResponse[]> = _error;
 
-      if (response?.status === 409) {
-        return setFormError({ title: response.data[0].message });
+      if (response?.data[0].message) {
+        const { field, message } = response.data[0];
+        return setFormError({ [field]: message });
       }
 
       return setFormError({});
@@ -80,7 +85,23 @@ function Projects() {
     if (showModal) toggleModal();
 
     setProjects([project, ...projects]);
+
+    setNoHasProjects(false);
   }
+
+  async function getProjectsInApi() {
+    const response = await axios.get('projects');
+
+    if (response.data.length === 0) {
+      return setNoHasProjects(true);
+    }
+
+    setProjects(response.data);
+  }
+
+  useEffect(() => {
+    getProjectsInApi();
+  }, []);
 
   return (
     <>
@@ -88,7 +109,10 @@ function Projects() {
         <title>Agility</title>
       </Helmet>
       <Header />
-      {projects.length > 0 ? (
+      {projects.length === 0 && !notHasProjects && (
+        <ProjectSkeleton />
+      )}
+      {projects.length > 0 && (
         <ProjectContainer>
           <ProjectContent>
             <header>
@@ -109,18 +133,19 @@ function Projects() {
             </ul>
           </ProjectContent>
         </ProjectContainer>
-      ) : (
+      )}
+      {notHasProjects && (
         <Form
           onSubmit={onSubmitForm}
           errors={formError}
         />
       )}
       {showModal && (
-      <ModalForm
-        onSubmit={onSubmitForm}
-        onClose={toggleModal}
-        errors={formError}
-      />
+        <ModalForm
+          onSubmit={onSubmitForm}
+          onClose={toggleModal}
+          errors={formError}
+        />
       )}
     </>
   );
