@@ -1,46 +1,50 @@
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useHistory } from 'react-router-dom';
 import { Form } from '@unform/web';
-import { FormHandles, SubmitHandler } from '@unform/core';
-import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
+
+import type { AxiosError, AxiosResponse } from 'axios';
+import type { FormHandles, SubmitHandler } from '@unform/core';
 
 import axios from '../../services/api';
-
 import InputText from '../../components/InputText';
 import Button from '../../components/Button';
 
 import AuthLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
-import MessageBox from '../../layouts/Form/MessageBox';
+import formatApiValidations from '../../utils/validators';
 
-interface IErrorStatus {
-  [key: number]: string;
+interface IErrorResponseApi {
+  field: string;
+  message: string;
 }
+
+type SuccessApi = AxiosResponse<{ message: string }>
 
 function ForgotPassword() {
   const formRef = useRef<FormHandles>(null);
-  const [errorForm, setErrorForm] = useState('');
-  const [successForm, setSuccessForm] = useState('');
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
 
   async function sendEmailToApi(email: string) {
     try {
-      await axios.post('auth/forgot-password', { email });
+      const response: SuccessApi = await axios.post('auth/forgot-password', {
+        email,
+      });
 
-      setSuccessForm('Seu pedido foi enviado! Verifique seu email!');
+      toast.success(response.data.message);
 
       return true;
     } catch (_error) {
-      const { response }: AxiosError = _error;
+      const { response }: AxiosError<IErrorResponseApi[]> = _error;
+      if (response?.data[0]?.message) {
+        const errors = formatApiValidations(response?.data);
 
-      const errors: IErrorStatus = {
-        401: 'A conta deste email não foi verificada.',
-        404: 'Este email não existe.',
-        500: 'Desculpe, houve um erro interno no servidor.',
-      };
+        formRef.current?.setErrors(errors);
+      }
 
-      setErrorForm(errors[response?.status || 500]);
       return false;
     }
   }
@@ -48,20 +52,15 @@ function ForgotPassword() {
   const onSubmitForm: SubmitHandler<{ email: string }> = async ({ email }) => {
     if (!email) return;
 
-    setErrorForm('');
-    setSuccessForm('');
+    formRef.current?.setErrors({});
 
     setIsLoading(true);
 
     const sendEmail = await sendEmailToApi(email);
 
-    if (!sendEmail) {
-      return setIsLoading(false);
-    }
+    if (!sendEmail) return setIsLoading(false);
 
-    formRef.current?.reset();
-
-    setIsLoading(false);
+    history.push('/login');
   };
 
   return (
@@ -73,19 +72,18 @@ function ForgotPassword() {
         <FormLayout>
           <header id="header-form">
             <h6>Esqueceu a senha?</h6>
-            <p>Sem problemas! Informe seu email e mandaremos um link de recuperação.</p>
+            <p>
+              Sem problemas! Informe seu email e
+              mandaremos um link de recuperação.
+            </p>
           </header>
 
-          {errorForm && (
-            <MessageBox type="error" text={errorForm} />
-          )}
-
-          {successForm && (
-            <MessageBox type="success" text={successForm} />
-          )}
-
           <Form ref={formRef} onSubmit={onSubmitForm}>
-            <InputText type="email" name="email" placeholder="email" />
+            <InputText
+              type="email"
+              name="email"
+              placeholder="email"
+            />
             <Button
               type="submit"
               title="Enviar link de recuperação"

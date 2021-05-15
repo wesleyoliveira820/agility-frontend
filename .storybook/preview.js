@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import GlobalStyle from '../src/styles/global';
 import lightTheme from '../src/themes/light';
+import AuthProvider from '../src/contexts/auth-context';
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -17,9 +18,11 @@ export const parameters = {
 export const decorators = [
   (Story) => (
     <ThemeProvider theme={lightTheme}>
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
+      <AuthProvider>
+        <MemoryRouter>
+          <Story />
+        </MemoryRouter>
+      </AuthProvider>
       <GlobalStyle />
     </ThemeProvider>
   )

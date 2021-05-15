@@ -1,8 +1,10 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import type { SubmitHandler } from '@unform/core';
 
 import Button from '../../components/Button';
 import InputText from '../../components/InputText';
@@ -13,7 +15,6 @@ import { useAuth } from '../../contexts/auth-context';
 import AuthPageLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
-import MessageBox from '../../layouts/Form/MessageBox';
 
 interface IFormProps {
   email: string;
@@ -26,17 +27,15 @@ function Login() {
   const [userInfo, setUserInfo] = useState({} as IFormProps);
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const [formError, setFormError] = useState('');
 
   const onSubmitForm: SubmitHandler<IFormProps> = async (userPayload) => {
     setIsLoading(true);
-    setFormError('');
 
     const login = await auth.login(userPayload);
 
-    if (login?.error) {
+    if (login?.message) {
       setIsLoading(false);
-      setFormError(login.error);
+      toast.error(login?.message);
       return;
     }
 
@@ -68,10 +67,6 @@ function Login() {
             <h6>Bem-vindo(a) de volta!</h6>
             <p>Conecte-se para continuar.</p>
           </header>
-
-          {formError && (
-            <MessageBox type="error" text={formError} />
-          )}
 
           <Form onSubmit={onSubmitForm}>
             <InputText

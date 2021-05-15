@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { FormHandles, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
-import { AxiosError } from 'axios';
+
+import type { FormHandles, SubmitHandler } from '@unform/core';
+import type { AxiosError } from 'axios';
 
 import InputText from '../../components/InputText';
 import Button from '../../components/Button';
@@ -15,7 +16,7 @@ import axios from '../../services/api';
 import AuthPageLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
-import MessageBox from '../../layouts/Form/MessageBox';
+import formatApiValidations from '../../utils/validators';
 
 interface IFormProps {
   name: string;
@@ -32,14 +33,11 @@ interface IApiValidationProps {
 
 function Register() {
   const formRef = useRef<FormHandles>(null);
-  const { clearEmail } = useEmail();
-  const { email } = useEmail();
+  const { email, clearEmail } = useEmail();
   const [isLoading, setIsLoading] = useState(false);
-  const [formError, setFormError] = useState('');
   const [showModal, setShowModal] = useState(false);
 
   async function validateFormData(userPayload: IFormProps) {
-    setFormError('');
     formRef.current?.setErrors({});
 
     const validation = await userRegisterValidator(userPayload);
@@ -60,22 +58,12 @@ function Register() {
     } catch (_error) {
       const { response }: AxiosError<IApiValidationProps[]> = _error;
 
-      const userAlreadyExists = response?.data[0].validation === 'unique';
-
-      if (response?.status === 400 && userAlreadyExists) {
-        setFormError('Este email já está sendo usado em outra conta.');
-        return false;
+      if (response?.data[0]?.message) {
+        const errors = formatApiValidations(response.data);
+        formRef.current?.setErrors(errors);
       }
 
-      if (response?.status === 500) {
-        setFormError('Houve um erro interno no servidor.');
-        return false;
-      }
-
-      if (response?.status === 400) {
-        setFormError('Verifique suas informações de cadastro.');
-        return false;
-      }
+      return false;
     }
   }
 
@@ -114,10 +102,6 @@ function Register() {
             <h6>Crie uma nova conta</h6>
             <p>Crie e gerencie projetos de forma ágil e escalável.</p>
           </header>
-
-          {formError && (
-            <MessageBox type="error" text={formError} />
-          )}
 
           <Form ref={formRef} onSubmit={onSubmitForm}>
             <InputText name="name" placeholder="Nome" autoFocus />

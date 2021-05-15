@@ -9,8 +9,8 @@ function Modal() {
   return (
     <Container>
       <motion.div
-        animate={{ scale: [0.5, 1] }}
-        transition={{ duration: 0.5 }}
+        animate={{ scale: [0.8, 1] }}
+        transition={{ duration: 0.3 }}
       >
         <ModalContainer>
           <LottiePlayer

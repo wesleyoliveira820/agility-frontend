@@ -1,40 +1,44 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AxiosError } from 'axios';
+
+import type { AxiosError, AxiosResponse } from 'axios';
 
 import axios from '../../services/api';
 
-interface IApiValidationProps {
+interface IResponseApiProps {
   message: string;
 }
 
+type SuccessApi = AxiosResponse<IResponseApiProps>
+
+type ErrorApi = AxiosError<IResponseApiProps>
+
 function EmailVerification() {
   const location = useLocation();
-  const [successMessage, setSuccessMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   async function emailVerificationRequest() {
     const queryCode = new URLSearchParams(location.search).get('code');
 
     if (!queryCode) {
-      setError('O código de verificação não existe.');
+      setMessage('Este link de verificação é inválido.');
       return;
     }
 
     try {
-      await axios.put('confirm-accounts', { code: queryCode });
-      setSuccessMessage('Seu email foi verificado com sucesso! Você já pode fazer login!');
+      const response: SuccessApi = await axios.put('confirm-accounts', {
+        code: queryCode,
+      });
+
+      setMessage(response.data.message);
     } catch (_error) {
-      const { response }: AxiosError<IApiValidationProps> = _error;
+      const { response }: ErrorApi = _error;
 
       if (response?.status === 404) {
-        setError('Este código é inválido.');
-        return;
+        return setMessage('Este link de verificação é inválido.');
       }
 
-      if (response?.status === 500) {
-        setError('Não foi possível fazer a verificação da sua conta. Tente novamente mais tarde ou entre em contato com suporte@agility.com');
-      }
+      setMessage('Erro de conexão.');
     }
   }
 
@@ -44,9 +48,8 @@ function EmailVerification() {
 
   return (
     <>
-      {!error && !successMessage && <p>Seu email está sendo verificado...</p>}
-      {error && <p>{error}</p>}
-      {successMessage && <p>{successMessage}</p>}
+      {!message && <p>Seu email está sendo verificado...</p>}
+      {message && <p>{message}</p>}
     </>
   );
 }
