@@ -24,11 +24,32 @@ export const Container = styled.header`
     display: flex;
     align-items: center;
     gap: 8px;
+
+    #title-project {
+      font-size: 21px;
+    }
   }
 
   #tools {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+
+    #project-info-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-right: 16px;
+
+      #divider {
+        height: 32px;
+        border-left: 2px solid ${(props) => props.theme.colors.divider.tertiary};
+      }
+
+      button {
+        width: 145px;
+      }
+    }
   }
 `;
 
