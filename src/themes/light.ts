@@ -7,7 +7,7 @@ export default {
       secondary: '#473BF0',
     },
     base: {
-      primary: '#F5F8FA',
+      primary: '#F0F3F5',
       secondary: '#FFFFFF',
     },
     text: {
