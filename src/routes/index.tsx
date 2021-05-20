@@ -8,6 +8,7 @@ import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
 import Projects from '../pages/Projects';
 import Kanban from '../pages/Kanban';
+import AcceptInvite from '../pages/AcceptInvite';
 
 import PrivateRoute from './private-route';
 import AuthRoute from './auth-route';
@@ -24,6 +25,7 @@ function Routes() {
         <AuthRoute path="/reset-password" component={ResetPassword} />
         <PrivateRoute path="/projects" component={Projects} />
         <PrivateRoute path="/project/:projectId" component={Kanban} />
+        <PrivateRoute path="/accept-invite" component={AcceptInvite} />
       </Switch>
     </BrowserRouter>
   );

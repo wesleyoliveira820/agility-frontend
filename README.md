@@ -38,6 +38,7 @@ Neste repositório contém o frontend de um sistema de gerenciamento de tarefas 
 - [x] Tela de Login
 - [x] Telas de recuperação de senha
 - [x] Dashboard de projetos
+- [x] Convidar membros e aceitar convites para projetos
 - [ ] Tela de kanban do projeto
 - [ ] Tela de configurações
 - [ ] Tela de Membros
@@ -50,6 +51,7 @@ Neste repositório contém o frontend de um sistema de gerenciamento de tarefas 
 * [Storybook](https://storybook.js.org/)
 * [Lottie Files](https://lottiefiles.com/)
 * [Styled components](https://styled-components.com/)
+* [Framer Motion](https://www.framer.com/motion/)
 * [Node.JS](https://nodejs.org/en/)
 
 ## Instalação

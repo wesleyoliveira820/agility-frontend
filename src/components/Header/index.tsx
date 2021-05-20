@@ -14,9 +14,10 @@ import Button from '../Button';
 interface IHeaderProps {
   title?: string;
   myRole?: string;
+  toggleInviteModal?: () => void;
 }
 
-function Header({ title, myRole }: IHeaderProps) {
+function Header({ title, myRole, toggleInviteModal }: IHeaderProps) {
   const { user } = useAuth();
 
   return (
@@ -34,7 +35,13 @@ function Header({ title, myRole }: IHeaderProps) {
       </div>
       <div id="tools">
         <div id="project-info-actions">
-          {myRole === 'admin' && <Button title="Adicionar membro" small />}
+          {myRole === 'admin' && (
+            <Button
+              title="Adicionar membro"
+              small
+              onClick={toggleInviteModal}
+            />
+          )}
           {myRole === 'admin' && <div id="divider" />}
         </div>
         <ButtonSetting type="button">

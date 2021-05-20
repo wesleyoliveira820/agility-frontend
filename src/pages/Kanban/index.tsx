@@ -7,6 +7,7 @@ import type { AxiosResponse } from 'axios';
 import axios from '../../services/api';
 
 import Header from '../../components/Header';
+import ModalInviteMember from './ModalInviteMember';
 
 interface IParamProps {
   projectId: string;
@@ -26,6 +27,7 @@ type SuccessApi = AxiosResponse<IProjectProps>;
 function Kanban() {
   const { projectId } = useParams<IParamProps>();
   const [project, setProject] = useState({} as IProjectProps);
+  const [toggleInviteModal, setToggleInviteModal] = useState(false);
 
   async function getProjectInApi() {
     const response: SuccessApi = await axios.get(`projects/${projectId}`);
@@ -48,7 +50,16 @@ function Kanban() {
         </title>
         )}
       </Helmet>
-      <Header title={project.title} myRole={project?.my_role?.slug} />
+      <Header
+        title={project.title}
+        myRole={project?.my_role?.slug}
+        toggleInviteModal={() => setToggleInviteModal(true)}
+      />
+      {toggleInviteModal && (
+        <ModalInviteMember
+          toggleInviteModal={() => setToggleInviteModal(false)}
+        />
+      )}
     </>
   );
 }
