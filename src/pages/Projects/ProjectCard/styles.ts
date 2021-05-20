@@ -7,12 +7,16 @@ export const LinkStyled = styled(Link)`
 
 export const Content = styled.li`
   background-color: ${(props) => props.theme.colors.base.secondary};
-  box-shadow: 0 1px 4px 0 rgba(206, 218, 230, 0.80);
   height: 157px;
 
+  border: 2px solid transparent;
   border-radius: 5px;
 
   padding: 16px;
+
+  &:hover {
+    border-color: ${(props) => props.theme.colors.brand.primary};
+  }
 
   p {
     width: 100%;
