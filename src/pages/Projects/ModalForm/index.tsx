@@ -54,6 +54,7 @@ function ModalForm({ onClose, onSubmit, errors }: IModalFormProps) {
           <InputText
             name="title"
             placeholder="Nome do projeto"
+            autoFocus
           />
           <Textarea
             bg="primary"
