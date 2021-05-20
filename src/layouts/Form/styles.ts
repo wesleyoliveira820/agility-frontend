@@ -7,7 +7,7 @@ export const Container = styled.div`
   padding: 24px;
   background-color: ${(props) => props.theme.colors.base.secondary};
 
-  border-radius: 5px;
+  border-radius: 3px;
 
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 

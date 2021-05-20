@@ -28,7 +28,7 @@ export const Container = styled.div<IInputProps>`
       padding: 0 15px;
     `}
 
-    border-radius: 5px;
+    border-radius: 3px;
 
     &:focus {
       border: 2px solid ${(props) => props.theme.colors.brand.primary};

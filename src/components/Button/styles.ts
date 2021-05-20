@@ -15,7 +15,7 @@ export const Container = styled.button<IButtonProps>`
   font-weight: bold;
 
   border: 0;
-  border-radius: 5px;
+  border-radius: 3px;
 
   background-color: ${(props) => props.theme.colors.brand.primary};
   color: #FFFFFF;

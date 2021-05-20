@@ -27,7 +27,7 @@ export const ModalContainer = styled.div`
   justify-content: center;
 
   background-color: ${(props) => props.theme.colors.base.secondary};
-  border-radius: 5px;
+  border-radius: 3px;
 
   h6 {
     font-size: 21px;

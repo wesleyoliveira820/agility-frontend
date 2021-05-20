@@ -10,7 +10,7 @@ export const Content = styled.li`
   height: 157px;
 
   border: 2px solid transparent;
-  border-radius: 5px;
+  border-radius: 3px;
 
   padding: 16px;
 
