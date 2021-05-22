@@ -4,7 +4,7 @@ import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
 
 import type { SubmitHandler, FormHandles } from '@unform/core';
-import type { AxiosResponse } from 'axios';
+import type { AxiosError, AxiosResponse } from 'axios';
 
 import axios from '../../../services/api';
 import FormLayout from '../../../layouts/Form';
@@ -32,6 +32,8 @@ interface IResponseApi {
 
 type SuccessApi = AxiosResponse<IResponseApi>;
 
+type ErrorApi = AxiosError<IResponseApi[]>
+
 function ModalInviteMember({ toggleInviteModal }: IModalProps) {
   const formRef = useRef<FormHandles>(null);
   const { user } = useAuth();
@@ -39,12 +41,6 @@ function ModalInviteMember({ toggleInviteModal }: IModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   function formatEmailsInArray(emails: string) {
-    if (!emails) {
-      return formRef.current?.setErrors({
-        emails: 'Este campo é obrigatório.',
-      });
-    }
-
     const formattedEmails = emails.split(',');
 
     return formattedEmails.map((email) => email.trim());
@@ -61,13 +57,23 @@ function ModalInviteMember({ toggleInviteModal }: IModalProps) {
   }
 
   async function sendInvites(emails: string[]) {
-    const response: SuccessApi = await axios.post('invites', {
-      emails,
-      project_id: projectId,
-    });
+    try {
+      const response: SuccessApi = await axios.post('invites', {
+        emails,
+        project_id: projectId,
+      });
 
-    if (response.data.message) {
       toast.success(response.data.message);
+
+      return true;
+    } catch (_error) {
+      const { response }: ErrorApi = _error;
+
+      formRef.current?.setErrors({
+        emails: response?.data[0].message || '',
+      });
+
+      return false;
     }
   }
 
@@ -78,13 +84,11 @@ function ModalInviteMember({ toggleInviteModal }: IModalProps) {
 
     const formattedEmails = formatEmailsInArray(emails);
 
-    if (!formattedEmails) return setIsLoading(false);
+    validateFormData(formattedEmails);
 
-    const validation = validateFormData(formattedEmails);
+    const invitationsSent = await sendInvites(formattedEmails);
 
-    if (!validation) return setIsLoading(false);
-
-    await sendInvites(formattedEmails);
+    if (!invitationsSent) return setIsLoading(false);
 
     if (toggleInviteModal) toggleInviteModal();
   };
