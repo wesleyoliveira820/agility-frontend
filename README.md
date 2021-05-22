@@ -40,7 +40,7 @@ Neste repositório contém o frontend de um sistema de gerenciamento de tarefas 
 - [x] Dashboard de projetos
 - [x] Convidar membros e aceitar convites para projetos
 - [ ] Tela de kanban do projeto
-- [ ] Tela de configurações
+- [x] Tela de configurações (Logout)
 - [ ] Tela de Membros
 - [ ] Tela de Informações do projeto
 

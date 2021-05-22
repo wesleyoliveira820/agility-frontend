@@ -59,3 +59,14 @@ export async function refreshTokens(): Promise<IResponseApiProps| void> {
 
   return response.data;
 }
+
+export async function userLogout() {
+  const response = await axios.delete('logout');
+
+  if (response.status >= 200 && response.status < 300) {
+    localStorage.clear();
+    return true;
+  }
+
+  return false;
+}

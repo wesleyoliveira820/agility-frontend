@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { darken } from 'polished';
 
+interface IButtonSettingsProps {
+  showModal: boolean;
+}
+
 export const Container = styled.header`
   width: 100%;
   height: 56px;
@@ -53,11 +57,29 @@ export const Container = styled.header`
   }
 `;
 
-export const ButtonSetting = styled.button`
+export const ButtonSetting = styled.button<IButtonSettingsProps>`
   width: 40px;
   height: 40px;
 
-  background-color: ${(props) => props.theme.colors.base.primary};
+
+  ${(props) => (props.showModal ? `
+    background-color: ${props.theme.colors.brand.primary};
+
+    &:hover {
+      background-color: ${darken(0.04, props.theme.colors.brand.primary)};
+    }
+
+    > img {
+      filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(346deg) brightness(104%) contrast(100%);
+    }
+  ` : `
+    background-color: ${props.theme.colors.base.primary};
+
+    &:hover {
+      background-color: ${darken(0.04, props.theme.colors.base.primary)};
+    }
+  `)}
+
   border-radius: 50%;
   margin-right: 8px;
 
@@ -66,10 +88,6 @@ export const ButtonSetting = styled.button`
   justify-content: center;
 
   transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${(props) => darken(0.04, props.theme.colors.base.primary)};
-  }
 `;
 
 export const Avatar = styled.div`

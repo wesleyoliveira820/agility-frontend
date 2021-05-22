@@ -14,6 +14,7 @@ import {
   setTokens,
   storeUser,
   getUser,
+  userLogout,
 } from '../utils/auth-methods';
 
 interface IAuthProps {
@@ -34,6 +35,7 @@ type ResultLogin = { message?: string } | undefined;
 interface IContextProps {
   user: IUserProps;
   login: (userPayload: IAuthProps) => Promise<ResultLogin>;
+  logout: () => Promise<boolean>;
 }
 
 interface IResponseApiProps {
@@ -76,8 +78,16 @@ function AuthProvider({ children }: IContext) {
     }
   }, []);
 
+  async function logout() {
+    const logoutInApi = await userLogout();
+
+    if (!logoutInApi) return false;
+
+    return true;
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
