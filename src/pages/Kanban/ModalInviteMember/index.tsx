@@ -39,18 +39,18 @@ function ModalInviteMember({ toggleInviteModal }: IModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   function formatEmailsInArray(emails: string) {
+    if (!emails) {
+      return formRef.current?.setErrors({
+        emails: 'Este campo é obrigatório.',
+      });
+    }
+
     const formattedEmails = emails.split(',');
 
     return formattedEmails.map((email) => email.trim());
   }
 
   function validateFormData(emails: string[]): true | void {
-    if (emails.length === 0) {
-      formRef.current?.setErrors({
-        emails: 'Este campo é obrigatório.',
-      });
-    }
-
     if (emails.includes(user.email)) {
       return formRef.current?.setErrors({
         emails: 'Você não pode convidar a si mesmo.',
@@ -78,11 +78,11 @@ function ModalInviteMember({ toggleInviteModal }: IModalProps) {
 
     const formattedEmails = formatEmailsInArray(emails);
 
+    if (!formattedEmails) return setIsLoading(false);
+
     const validation = validateFormData(formattedEmails);
 
-    if (!validation) {
-      return setIsLoading(false);
-    }
+    if (!validation) return setIsLoading(false);
 
     await sendInvites(formattedEmails);
 
