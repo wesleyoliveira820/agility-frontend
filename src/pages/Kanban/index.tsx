@@ -8,18 +8,30 @@ import axios from '../../services/api';
 
 import Header from '../../components/Header';
 import ModalInviteMember from './ModalInviteMember';
+import Board from './Board';
 
 interface IParamProps {
   projectId: string;
 }
 
+interface IListProjectProps {
+  id: string;
+  title: string;
+  create_cards: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface IRoleProjectProps {
+  id: string;
+  slug: string;
+}
+
 interface IProjectProps {
   id: string;
   title: string;
-  my_role: {
-    id: string;
-    slug: string;
-  }
+  lists: IListProjectProps[];
+  my_role: IRoleProjectProps;
 }
 
 type SuccessApi = AxiosResponse<IProjectProps>;
@@ -55,6 +67,7 @@ function Kanban() {
         myRole={project?.my_role?.slug}
         toggleInviteModal={() => setToggleInviteModal(true)}
       />
+      <Board lists={project.lists} project_id={projectId} />
       {toggleInviteModal && (
         <ModalInviteMember
           toggleInviteModal={() => setToggleInviteModal(false)}
