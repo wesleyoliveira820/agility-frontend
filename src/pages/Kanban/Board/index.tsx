@@ -1,53 +1,40 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import List from '../List';
 import AddListForm from '../addListForm';
 
 import { Container, ButtonAddList } from './styles';
+import { useProject } from '../../../contexts/project-context';
 
-interface IListProjectProps {
-  id: string;
-  title: string;
-  create_cards: boolean;
-  created_at: Date;
-  updated_at: Date;
+interface IParamProps {
+  projectId: string;
 }
 
-interface IBoardProps {
-  project_id: string;
-  lists: IListProjectProps[];
-}
-
-function Board({ project_id, lists }: IBoardProps) {
-  const [listsOfProject, setListsOfProject] = useState([] as IListProjectProps[]);
+function Board() {
+  const { projectId } = useParams<IParamProps>();
+  const { getCurrentProject, lists } = useProject();
   const [showListForm, setShowListForm] = useState(false);
 
   function toggleListForm() {
     setShowListForm(!showListForm);
   }
 
-  function addNewList(list: IListProjectProps) {
-    setListsOfProject([...listsOfProject, list]);
-  }
-
   useEffect(() => {
-    setListsOfProject(lists);
-  }, [lists]);
+    getCurrentProject(projectId);
+  }, []);
 
   return (
     <Container>
-      {listsOfProject && listsOfProject.map((list) => (
+      {lists.map((list) => (
         <List
           key={list.id}
-          title={list.title}
-          addCardButton={list.create_cards}
+          {...list}
         />
       ))}
       {showListForm ? (
         <AddListForm
-          project_id={project_id}
           onClose={toggleListForm}
-          onNewList={addNewList}
         />
       ) : (
         <ButtonAddList type="button" onClick={toggleListForm}>

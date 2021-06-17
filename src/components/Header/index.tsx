@@ -12,15 +12,15 @@ import logo from '../../assets/global/logo.svg';
 import settings from '../../assets/global/settings.svg';
 import Button from '../Button';
 import ModalSettings from './ModalSettings';
+import { useProject } from '../../contexts/project-context';
 
 interface IHeaderProps {
-  title?: string;
-  myRole?: string;
   toggleInviteModal?: () => void;
 }
 
-function Header({ title, myRole, toggleInviteModal }: IHeaderProps) {
+function Header({ toggleInviteModal }: IHeaderProps) {
   const { user } = useAuth();
+  const { project } = useProject();
   const [toggleModalSettings, setToggleModalSettings] = useState(false);
 
   function handleToggleModalsettings() {
@@ -34,23 +34,23 @@ function Header({ title, myRole, toggleInviteModal }: IHeaderProps) {
           <LinkStyled to="/projects">
             <img src={logo} alt="Agility" />
           </LinkStyled>
-          {title && (
+          {project?.title && (
           <>
             <span>-</span>
-            <h6 id="title-project">{title}</h6>
+            <h6 id="title-project">{project.title}</h6>
           </>
           )}
         </div>
         <div id="tools">
           <div id="project-info-actions">
-            {myRole === 'admin' && (
+            {project?.my_role?.slug === 'admin' && (
             <Button
               title="Adicionar membro"
               small
               onClick={toggleInviteModal}
             />
             )}
-            {myRole === 'admin' && <div id="divider" />}
+            {project?.my_role?.slug === 'admin' && <div id="divider" />}
           </div>
           <ButtonSetting
             type="button"

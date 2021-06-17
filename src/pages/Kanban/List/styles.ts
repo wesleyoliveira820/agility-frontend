@@ -89,4 +89,20 @@ export const Content = styled.div`
   background-color: ${(props) => props.theme.colors.base.primary};
 
   height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  padding: 16px 0 64px;
+
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;

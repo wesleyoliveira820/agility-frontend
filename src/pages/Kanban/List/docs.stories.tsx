@@ -1,5 +1,6 @@
 import { Story, Meta } from '@storybook/react';
-import List, { IListProps } from './index';
+import type { IListProps } from '../../../contexts/project-context';
+import List from './index';
 
 const Template: Story<IListProps> = (args) => <List {...args} />;
 
@@ -11,7 +12,36 @@ Default.args = {
 export const WithAddCardButton = Template.bind({});
 WithAddCardButton.args = {
   title: 'Tarefas',
-  addCardButton: true,
+  create_cards: true,
+};
+
+const cards = [
+  {
+    id: '1',
+    title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    created_at: 'Jun 12 11:06:58 +00',
+  },
+  {
+    id: '2',
+    title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    created_at: 'Jun 12 11:06:58 +00',
+  },
+  {
+    id: '3',
+    title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    created_at: 'Jun 12 11:06:58 +00',
+  },
+  {
+    id: '4',
+    title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    created_at: 'Jun 12 11:06:58 +00',
+  },
+];
+
+export const WithCards = Template.bind({});
+WithCards.args = {
+  ...WithAddCardButton.args,
+  cards,
 };
 
 export default {
@@ -25,11 +55,17 @@ export default {
     },
   },
   argTypes: {
+    id: {
+      description: 'Id da lista.',
+    },
     title: {
       description: 'Define o nome da lista. Esta propriedade é obrigatória',
     },
-    addCardButton: {
+    create_cards: {
       description: 'Quando setado como true mostra um botão que permite criar cards em uma determinada lista. Por padrão é false.',
+    },
+    cards: {
+      description: 'Essa propriedade recebe um array de propriedades que formam os cards da lists.',
     },
   },
 } as Meta;

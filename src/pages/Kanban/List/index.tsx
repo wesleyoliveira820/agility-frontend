@@ -1,14 +1,24 @@
+import { useState } from 'react';
+
+import Card from '../Card';
+import AddCardForm from '../addCardForm';
+import type { IListProps } from '../../../contexts/project-context';
+
 import { Container, Header, Content } from './styles';
 
 import dotsVerticalWhite from '../../../assets/kanban/dots-vertical-white.svg';
 
-export interface IListProps {
-  title: string;
-  addCardButton?: boolean;
-  cards?: [];
-}
+function List({
+  title,
+  create_cards = false,
+  cards,
+}: IListProps) {
+  const [showAddCardForm, setShowAddCardForm] = useState(false);
 
-function List({ title, addCardButton = false, cards }: IListProps) {
+  function toggleShowCardForm() {
+    setShowAddCardForm(!showAddCardForm);
+  }
+
   return (
     <Container>
       <Header>
@@ -17,9 +27,13 @@ function List({ title, addCardButton = false, cards }: IListProps) {
           <p>{cards?.length || '0'}</p>
         </span>
         <span id="list-actions">
-          {addCardButton
+          {create_cards
             && (
-            <button type="button" id="button-add-card">
+            <button
+              type="button"
+              id="button-add-card"
+              onClick={toggleShowCardForm}
+            >
               <span>+</span>
             </button>
             )}
@@ -28,7 +42,16 @@ function List({ title, addCardButton = false, cards }: IListProps) {
           </button>
         </span>
       </Header>
-      <Content />
+      <Content>
+        {showAddCardForm && (
+          <AddCardForm
+            onClose={toggleShowCardForm}
+          />
+        )}
+        {cards && cards.map((card) => (
+          <Card key={card.id} {...card} />
+        ))}
+      </Content>
     </Container>
   );
 }
