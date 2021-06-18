@@ -73,8 +73,21 @@ function ProjectProvider({ children }: IProjectProviderProps) {
     setLists([...newBoard]);
   }
 
+  function addListInBoard(list: IListProps) {
+    const findList = lists.find((item) => item.id === list.id);
+
+    if (findList) return;
+
+    const board = lists;
+
+    board.push(list);
+
+    setLists([...board]);
+  }
+
   function listenWebsocketEvents(channel: any) {
     channel.on('new:card', addCardInList);
+    channel.on('new:list', addListInBoard);
   }
 
   function connectWebsocket() {
@@ -96,12 +109,10 @@ function ProjectProvider({ children }: IProjectProviderProps) {
 
   async function addNewList(title: string) {
     try {
-      const response: AxiosResponse<IListProps> = await axios.post('projects/lists', {
+      await axios.post('projects/lists', {
         title,
         project_id: project.id,
       });
-
-      setLists([...lists, response.data]);
     } catch (_error) {
       const { response }: AxiosError<IApiErrorResponse[]> = _error;
 
