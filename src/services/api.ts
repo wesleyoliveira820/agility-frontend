@@ -17,7 +17,7 @@ api.interceptors.request.use((config: AxiosRequestConfig) => {
   const token = getToken();
 
   config.headers = {
-    Authorization: token,
+    Authorization: `Bearer ${token}`,
     Accept: 'application/json',
   };
 

@@ -30,7 +30,7 @@ export function getToken() {
     return null;
   }
 
-  return `Bearer ${token}`;
+  return token;
 }
 
 export function storeUser(userPayload: IUserProps) {

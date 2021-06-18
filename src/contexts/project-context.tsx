@@ -2,6 +2,7 @@ import {
   createContext,
   ReactNode,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 
@@ -9,6 +10,7 @@ import { toast } from 'react-toastify';
 import type { AxiosResponse, AxiosError } from 'axios';
 
 import axios from '../services/api';
+import ws from '../services/websocket';
 
 interface IProjectProviderProps {
   children: ReactNode;
@@ -23,6 +25,7 @@ interface IProjectProps {
   id: string;
   title: string;
   my_role: IRoleProjectProps;
+  allow_exec: boolean;
 }
 
 export interface ICardProps {
@@ -57,21 +60,59 @@ function ProjectProvider({ children }: IProjectProviderProps) {
   const [project, setProject] = useState({} as IProjectProps);
   const [lists, setLists] = useState([] as IListProps[]);
 
+  function addCardInList(card: ICardProps) {
+    const alreadyExists = lists[0].cards?.find((item) => item.id === card.id);
+
+    if (alreadyExists) return;
+
+    const findList = lists.find((list) => list.create_cards === true);
+    findList?.cards?.push(card);
+
+    const newBoard = Object.assign(lists, findList);
+
+    setLists([...newBoard]);
+  }
+
+  function addListInBoard(list: IListProps) {
+    const findList = lists.find((item) => item.id === list.id);
+
+    if (findList) return;
+
+    const board = lists;
+
+    board.push(list);
+
+    setLists([...board]);
+  }
+
+  function listenWebsocketEvents(channel: any) {
+    channel.on('new:card', addCardInList);
+    channel.on('new:list', addListInBoard);
+  }
+
+  function connectWebsocket() {
+    const channel = `projectRoom:${project.id}`;
+    const projectRoom = ws.getSubscription(channel) || ws.subscribe(channel);
+    listenWebsocketEvents(projectRoom);
+  }
+
+  useEffect(() => {
+    if (project) connectWebsocket();
+  }, [project]);
+
   async function getCurrentProject(projectId: string) {
     const response = await axios.get(`projects/${projectId}`);
 
-    setProject({ ...response.data, lists: undefined });
     setLists(response.data.lists);
+    setProject({ ...response.data, lists: undefined });
   }
 
   async function addNewList(title: string) {
     try {
-      const response: AxiosResponse<IListProps> = await axios.post('projects/lists', {
+      await axios.post('projects/lists', {
         title,
         project_id: project.id,
       });
-
-      setLists([...lists, response.data]);
     } catch (_error) {
       const { response }: AxiosError<IApiErrorResponse[]> = _error;
 
@@ -80,17 +121,10 @@ function ProjectProvider({ children }: IProjectProviderProps) {
   }
 
   async function addNewCard(title: string) {
-    const response: AxiosResponse<ICardProps> = await axios.post('/projects/lists/cards', {
+    await axios.post('/projects/lists/cards', {
       title,
       project_id: project.id,
     });
-
-    const findList = lists.find((list) => list.create_cards === true);
-    findList?.cards?.push(response.data);
-
-    const newBoard = Object.assign(lists, findList);
-
-    setLists([...newBoard]);
   }
 
   return (
