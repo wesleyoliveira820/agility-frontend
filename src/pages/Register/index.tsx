@@ -15,7 +15,7 @@ import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
 import api from '../../services/api';
 import formatApiValidations from '../../utils/validators';
-import { userRegisterValidator } from '../../validators/user';
+import { validateCreateUser } from '../../validators/create-user.validator';
 
 type FormData = {
   name: string;
@@ -46,7 +46,7 @@ function Register() {
 
     formRef.current?.setErrors({});
 
-    const validation = await userRegisterValidator(formData);
+    const validation = await validateCreateUser(formData);
 
     if (validation) {
       setMainRequestIsRunning(false);

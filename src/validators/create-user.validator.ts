@@ -1,19 +1,16 @@
 import * as Yup from 'yup';
 import type { SchemaOf, BaseSchema } from 'yup';
+import validateData from '../utils/validator';
 
-interface IRegisterProps {
+interface UserData {
   name: string;
   email: string;
   password: string;
   password_confirmation?: string;
 }
 
-interface Errors {
-  [key: string]: string;
-}
-
-async function userRegisterValidator(userPayload: IRegisterProps) {
-  const schema: SchemaOf<IRegisterProps> = Yup.object().shape({
+async function validateCreateUser(userData: UserData) {
+  const schema: SchemaOf<UserData> = Yup.object().shape({
     name: Yup.string()
       .matches(
         /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/,
@@ -40,21 +37,8 @@ async function userRegisterValidator(userPayload: IRegisterProps) {
       }),
   });
 
-  try {
-    await schema.validate(userPayload, {
-      abortEarly: false,
-    });
-  } catch (errors) {
-    if (errors instanceof Yup.ValidationError) {
-      const validationErrors: Errors = {};
-
-      errors.inner.forEach(({ path = '', message }) => {
-        validationErrors[path] = message;
-      });
-
-      return validationErrors;
-    }
-  }
+  const validation = await validateData(userData, schema);
+  return validation;
 }
 
-export { userRegisterValidator };
+export { validateCreateUser };
