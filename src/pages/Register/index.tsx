@@ -1,31 +1,30 @@
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Form } from '@unform/web';
-
-import type { FormHandles, SubmitHandler } from '@unform/core';
+import type { FormHandles } from '@unform/core';
 import type { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
 import InputText from '../../components/InputText';
 import Button from '../../components/Button';
-import Modal from './Modal';
-
 import { useEmail } from '../../contexts/email-context';
-import { userRegisterValidator } from '../../validators/user';
-import axios from '../../services/api';
 
+import Modal from './Modal';
 import AuthPageLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
+import api from '../../services/api';
 import formatApiValidations from '../../utils/validators';
+import { userRegisterValidator } from '../../validators/user';
 
-interface IFormProps {
+type FormData = {
   name: string;
   email: string;
   password: string;
   password_confirmation: string;
 }
 
-interface IApiValidationProps {
+type ApiValidationProps = {
   message: string;
   field: string;
   validation: string;
@@ -33,63 +32,48 @@ interface IApiValidationProps {
 
 function Register() {
   const formRef = useRef<FormHandles>(null);
+
   const { email, clearEmail } = useEmail();
-  const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [mainRequestIsRunning, setMainRequestIsRunning] = useState(false);
+  const [showConfirmRegisterModal, setShowConfirmRegisterModal] = useState(false);
 
-  async function validateFormData(userPayload: IFormProps) {
-    formRef.current?.setErrors({});
-
-    const validation = await userRegisterValidator(userPayload);
-
-    if (validation) {
-      formRef.current?.setErrors(validation);
-      return false;
-    }
-
-    return true;
+  async function postUserRequest(formData: FormData) {
+    await api.post('/users', formData);
   }
 
-  async function registerUserInAPI(userPayload: IFormProps) {
-    try {
-      await axios.post('users', userPayload);
+  async function handleSubmitForm(formData: FormData) {
+    setMainRequestIsRunning(true);
 
-      return true;
-    } catch (_error) {
-      const { response }: AxiosError<IApiValidationProps[]> = _error;
+    formRef.current?.setErrors({});
+
+    const validation = await userRegisterValidator(formData);
+
+    if (validation) {
+      setMainRequestIsRunning(false);
+      return formRef.current?.setErrors(validation);
+    }
+
+    try {
+      await postUserRequest(formData);
+
+      formRef.current?.reset();
+
+      clearEmail();
+      setMainRequestIsRunning(false);
+      setShowConfirmRegisterModal(true);
+    } catch (error: any) {
+      const { response }: AxiosError<ApiValidationProps[]> = error;
+
+      setMainRequestIsRunning(false);
 
       if (response?.data[0]?.message) {
         const errors = formatApiValidations(response.data);
-        formRef.current?.setErrors(errors);
+        return formRef.current?.setErrors(errors);
       }
 
-      return false;
+      toast.error('Não foi possível criar uma nova conta. Tente novamente mais tarde.');
     }
   }
-
-  const onSubmitForm: SubmitHandler<IFormProps> = async (userPayload) => {
-    setIsLoading(true);
-
-    const isValid = await validateFormData(userPayload);
-
-    if (!isValid) {
-      return setIsLoading(false);
-    }
-
-    const createdUser = await registerUserInAPI(userPayload);
-
-    if (!createdUser) {
-      return setIsLoading(false);
-    }
-
-    formRef.current?.reset();
-
-    clearEmail();
-
-    setIsLoading(false);
-
-    setShowModal(true);
-  };
 
   return (
     <>
@@ -103,7 +87,7 @@ function Register() {
             <p>Crie e gerencie projetos de forma ágil e escalável.</p>
           </header>
 
-          <Form ref={formRef} onSubmit={onSubmitForm}>
+          <Form ref={formRef} onSubmit={handleSubmitForm}>
             <InputText name="name" placeholder="Nome" autoFocus />
             <InputText name="email" placeholder="Email" defaultValue={email} />
             <InputText type="password" name="password" placeholder="Senha" />
@@ -126,8 +110,8 @@ function Register() {
             <Button
               type="submit"
               title="Criar nova conta"
-              isLoading={isLoading}
-              disabled={isLoading}
+              isLoading={mainRequestIsRunning}
+              disabled={mainRequestIsRunning}
             />
           </Form>
 
@@ -142,7 +126,7 @@ function Register() {
           </footer>
         </FormLayout>
       </AuthPageLayout>
-      {showModal && <Modal />}
+      {showConfirmRegisterModal && <Modal />}
     </>
   );
 }
