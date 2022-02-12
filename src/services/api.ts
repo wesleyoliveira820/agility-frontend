@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import appConfig from '../config/app.config';
 
 import { getToken, refreshTokens, setTokens } from '../utils/auth-methods';
 
@@ -8,9 +9,7 @@ interface IMyRequestConfig extends AxiosRequestConfig {
 }
 
 const api = axios.create({
-  baseURL: process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3333'
-    : process.env.API_URL,
+  baseURL: appConfig.api_url,
 });
 
 api.interceptors.request.use((config: AxiosRequestConfig) => {
