@@ -1,28 +1,29 @@
 import { DefaultTheme } from 'styled-components';
+import pallete from './pallete';
 
 export default {
   colors: {
     brand: {
-      primary: '#279AF1',
-      secondary: '#473BF0',
+      primary: pallete.blue[300],
+      secondary: pallete.blue[700],
     },
     base: {
-      primary: '#F0F3F5',
-      secondary: '#FFFFFF',
+      primary: pallete.gray[50],
+      secondary: pallete.white,
     },
     text: {
-      primary: '#333333',
-      secondary: '#636363',
+      primary: pallete.gray[500],
+      secondary: pallete.gray[400],
     },
     divider: {
-      primary: '#A2A4A6',
-      secondary: '#BBBDBF',
-      tertiary: '#D4D6D9',
+      primary: pallete.gray[300],
+      secondary: pallete.gray[200],
+      tertiary: pallete.gray[100],
     },
     helpers: {
-      success: '#12DB89',
-      warning: '#FFBB43',
-      error: '#F95E5A',
+      success: pallete.green[400],
+      warning: pallete.yellow[500],
+      error: pallete.yellow[500],
     },
   },
 } as DefaultTheme;
