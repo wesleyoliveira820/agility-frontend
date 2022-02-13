@@ -23,7 +23,7 @@ export default {
     helpers: {
       success: pallete.green[400],
       warning: pallete.yellow[500],
-      error: pallete.yellow[500],
+      error: pallete.red[500],
     },
   },
 } as DefaultTheme;
