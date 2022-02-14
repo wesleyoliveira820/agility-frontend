@@ -1,17 +1,14 @@
 import * as Yup from 'yup';
 import type { SchemaOf, BaseSchema } from 'yup';
+import validateData from '../utils/validator';
 
-interface IValidatorProps {
+interface ValidatorProps {
   password: string;
   password_confirmation?: string;
 }
 
-interface Errors {
-  [key: string]: string;
-}
-
-async function resetPasswordValidator(payload: IValidatorProps) {
-  const schema: SchemaOf<IValidatorProps> = Yup.object().shape({
+async function resetPasswordValidator(payload: ValidatorProps) {
+  const schema: SchemaOf<ValidatorProps> = Yup.object().shape({
     password: Yup.string()
       .min(8, 'A senha deve ter no mínimo 8 caracteres.')
       .required('Este campo é obrigatório.'),
@@ -27,21 +24,8 @@ async function resetPasswordValidator(payload: IValidatorProps) {
       }),
   });
 
-  try {
-    await schema.validate(payload, {
-      abortEarly: false,
-    });
-  } catch (errors) {
-    if (errors instanceof Yup.ValidationError) {
-      const validationErrors: Errors = {};
-
-      errors.inner.forEach(({ path = '', message }) => {
-        validationErrors[path] = message;
-      });
-
-      return validationErrors;
-    }
-  }
+  const validation = await validateData(payload, schema);
+  return validation;
 }
 
 export { resetPasswordValidator };
