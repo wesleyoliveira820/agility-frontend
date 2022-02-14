@@ -56,8 +56,8 @@ function Projects() {
       const response = await axios.post('projects', projectPayload);
 
       return response.data;
-    } catch (_error) {
-      const { response }: AxiosError<IApiErrorResponse[]> = _error;
+    } catch (error: any) {
+      const { response }: AxiosError<IApiErrorResponse[]> = error;
 
       if (response?.data[0]?.message) {
         const { field, message } = response.data[0];
