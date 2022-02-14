@@ -10,11 +10,11 @@ import Button from '../../components/Button';
 import InputText from '../../components/InputText';
 
 import { loginValidator } from '../../validators/login';
-import { useAuth } from '../../contexts/auth-context';
 
 import AuthPageLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
+import { useAuth } from '../../hooks/use-auth';
 
 interface IFormProps {
   email: string;

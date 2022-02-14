@@ -1,9 +1,7 @@
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
-
-import { useAuth } from '../../../contexts/auth-context';
 
 import arrowRight from '../../../assets/global/arrow-right.svg';
+import { useAuth } from '../../../hooks/use-auth';
 
 import {
   Container,
@@ -16,15 +14,9 @@ function ModalSettings() {
   const auth = useAuth();
   const history = useHistory();
 
-  async function onLogout() {
-    const logout = await auth.logout();
-
-    if (logout) {
-      toast.success('Você foi deslogado com sucesso, até a próxima!');
-      history.push('/login');
-    } else {
-      toast.error('Houve um erro ao fazer logout, tente novamente mais tarde.');
-    }
+  async function handleLogout() {
+    await auth.logout();
+    history.push('/login');
   }
 
   return (
@@ -33,7 +25,7 @@ function ModalSettings() {
         <OptionsList>
           <h6>Geral</h6>
           <Option>
-            <button type="button" onClick={onLogout}>
+            <button type="button" onClick={handleLogout}>
               <p>Sair desta conta</p>
               <img src={arrowRight} alt="Clicar" />
             </button>

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isLogged } from '../utils/auth-methods';
+import { useAuth } from '../hooks/use-auth';
 
 interface IRouteProps {
   component: FC;
@@ -9,6 +9,8 @@ interface IRouteProps {
 }
 
 function AuthRoute({ ...props }: IRouteProps) {
+  const { isLogged } = useAuth();
+
   return !isLogged()
     ? (<Route {...props} />)
     : (<Redirect to="/projects" />);

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Avatar from '../Avatar';
-import { useAuth } from '../../contexts/auth-context';
 
 import {
   Container,
@@ -13,6 +12,7 @@ import settings from '../../assets/global/settings.svg';
 import Button from '../Button';
 import ModalSettings from './ModalSettings';
 import { useProject } from '../../contexts/project-context';
+import { useAuth } from '../../hooks/use-auth';
 
 interface IHeaderProps {
   toggleInviteModal?: () => void;

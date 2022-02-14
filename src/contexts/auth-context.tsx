@@ -2,27 +2,24 @@ import {
   createContext,
   useState,
   ReactNode,
-  useContext,
   useCallback,
 } from 'react';
 
-import { AxiosError, AxiosResponse } from 'axios';
+import type { AxiosError, AxiosResponse } from 'axios';
 
 import axios from '../services/api';
 
 import {
-  setTokens,
-  storeUser,
-  getUser,
   userLogout,
+  storeTokens,
 } from '../utils/auth-methods';
 
-interface IAuthProps {
+interface AuthCredentialsProps {
   email: string;
   password: string;
 }
 
-interface IUserProps {
+interface UserProps {
   id: string;
   name: string;
   email: string;
@@ -32,44 +29,40 @@ interface IUserProps {
 
 type ResultLogin = { message?: string } | undefined;
 
-interface IContextProps {
-  user: IUserProps;
-  login: (userPayload: IAuthProps) => Promise<ResultLogin>;
-  logout: () => Promise<boolean>;
+interface ContextProps {
+  user: UserProps;
+  login: (userPayload: AuthCredentialsProps) => Promise<ResultLogin>;
+  logout: () => Promise<void>;
 }
 
-interface IResponseApiProps {
+interface ResponseApiProps {
   token: string;
   refresh_token: string;
-  user: IUserProps;
+  user: UserProps;
 }
 
-interface IContext {
+interface ProviderProps {
   children: ReactNode;
 }
 
-type LoginAxiosResponse = AxiosResponse<IResponseApiProps>;
+type LoginAxiosResponse = AxiosResponse<ResponseApiProps>;
 
-const AuthContext = createContext({} as IContextProps);
+export const AuthContext = createContext({} as ContextProps);
 
-function AuthProvider({ children }: IContext) {
-  const [user, setUser] = useState(() => getUser() || {} as IUserProps);
+function AuthProvider({ children }: ProviderProps) {
+  const [user, setUser] = useState({} as UserProps);
 
-  const login = useCallback(async (userPayload: IAuthProps): Promise<ResultLogin> => {
+  const login = useCallback(async (userPayload: AuthCredentialsProps): Promise<ResultLogin> => {
     try {
       const response: LoginAxiosResponse = await axios.post('auth/login', userPayload);
 
       const { user: profile, token, refresh_token } = response.data;
 
       setUser(profile);
-
-      setTokens(token, refresh_token);
-
-      storeUser(profile);
-
-      return;
-    } catch (_error) {
+      storeTokens(token, refresh_token);
+    } catch (_error: any) {
       const { response }: AxiosError<{ message?: string }> = _error;
+
       if (response?.status === 401) {
         return { message: 'Email ou senha estão incorretos.' };
       }
@@ -79,11 +72,7 @@ function AuthProvider({ children }: IContext) {
   }, []);
 
   async function logout() {
-    const logoutInApi = await userLogout();
-
-    if (!logoutInApi) return false;
-
-    return true;
+    await userLogout();
   }
 
   return (
@@ -91,10 +80,6 @@ function AuthProvider({ children }: IContext) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }
 
 export default AuthProvider;

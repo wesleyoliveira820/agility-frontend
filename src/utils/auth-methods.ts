@@ -1,72 +1,33 @@
+import Cookies from 'js-cookie';
+import appConfig from '../config/app.config';
 import axios from '../services/api';
 
-interface IUserProps {
-  id: string;
-  name: string;
-  email: string;
-  initial_name: string;
-  color_name: string;
-}
+const { cookies: cookieConfig } = appConfig;
 
-interface IResponseApiProps {
-  token: string;
-  refresh_token: string;
-}
+Cookies.withAttributes({
+  path: cookieConfig.path,
+  sameSite: cookieConfig.sameSite,
+});
 
-export function isLogged() {
-  const token = localStorage.getItem('@agility:token');
-  return !!token;
-}
+export function storeTokens(token: string, refresh_token: string) {
+  Cookies.set(cookieConfig.token.name, token, {
+    expires: cookieConfig.token.expires,
+  });
 
-export function setTokens(token: string, refresh_token: string) {
-  localStorage.setItem('@agility:token', token);
-  localStorage.setItem('@agility:refreshToken', refresh_token);
+  Cookies.set(cookieConfig.refresh_token.name, refresh_token, {
+    expires: cookieConfig.refresh_token.expires,
+  });
 }
 
 export function getToken() {
-  const token = localStorage.getItem('@agility:token');
-
-  if (!token) {
-    return null;
-  }
-
+  const token = Cookies.get(cookieConfig.token.name);
+  if (!token) return null;
   return token;
 }
 
-export function storeUser(userPayload: IUserProps) {
-  const user = JSON.stringify(userPayload);
-
-  localStorage.setItem('@agility:user', user);
-}
-
-export function getUser(): IUserProps | undefined {
-  const user = localStorage.getItem('@agility:user');
-
-  if (!user) return;
-
-  return JSON.parse(user);
-}
-
-export async function refreshTokens(): Promise<IResponseApiProps| void> {
-  const refresh_token = localStorage.getItem('@agility:refreshToken');
-  const token = localStorage.getItem('@agility:token');
-
-  if (!refresh_token || !token) return;
-
-  const response = await axios.put('auth/refresh-token', {
-    refresh_token,
-  });
-
-  return response.data;
-}
-
 export async function userLogout() {
-  const response = await axios.delete('logout');
+  await axios.delete('logout');
 
-  if (response.status >= 200 && response.status < 300) {
-    localStorage.clear();
-    return true;
-  }
-
-  return false;
+  Cookies.remove(cookieConfig.token.name);
+  Cookies.remove(cookieConfig.refresh_token.name);
 }

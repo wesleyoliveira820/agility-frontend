@@ -10,9 +10,9 @@ import axios from '../../../services/api';
 import FormLayout from '../../../layouts/Form';
 import InputText from '../../../components/InputText';
 import Button from '../../../components/Button';
-import { useAuth } from '../../../contexts/auth-context';
 
 import { Container } from './styles';
+import { useAuth } from '../../../hooks/use-auth';
 
 interface IModalProps {
   toggleInviteModal?: () => void;
@@ -66,7 +66,7 @@ function ModalInviteMember({ toggleInviteModal }: IModalProps) {
       toast.success(response.data.message);
 
       return true;
-    } catch (_error) {
+    } catch (_error: any) {
       const { response }: ErrorApi = _error;
 
       formRef.current?.setErrors({
