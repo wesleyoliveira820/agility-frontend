@@ -14,7 +14,7 @@ import AuthPageLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
 import api from '../../services/api';
-import formatApiValidations from '../../utils/validators';
+import formatApiValidations from '../../utils/format-api-validations';
 import { validateCreateUser } from '../../validators/create-user.validator';
 
 type FormData = {

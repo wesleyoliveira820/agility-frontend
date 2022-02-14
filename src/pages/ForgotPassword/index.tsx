@@ -14,7 +14,7 @@ import Button from '../../components/Button';
 import AuthLayout from '../../layouts/AuthPage';
 import FormLayout from '../../layouts/Form';
 import Link from '../../layouts/Form/Link';
-import formatApiValidations from '../../utils/validators';
+import formatApiValidations from '../../utils/format-api-validations';
 
 interface IErrorResponseApi {
   field: string;
@@ -37,8 +37,9 @@ function ForgotPassword() {
       toast.success(response.data.message);
 
       return true;
-    } catch (_error) {
-      const { response }: AxiosError<IErrorResponseApi[]> = _error;
+    } catch (error: any) {
+      const { response }: AxiosError<IErrorResponseApi[]> = error;
+
       if (response?.data[0]?.message) {
         const errors = formatApiValidations(response?.data);
 
