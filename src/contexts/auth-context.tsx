@@ -3,6 +3,7 @@ import {
   useState,
   ReactNode,
   useCallback,
+  useEffect,
 } from 'react';
 
 import type { AxiosError, AxiosResponse } from 'axios';
@@ -12,6 +13,7 @@ import axios from '../services/api';
 import {
   userLogout,
   storeTokens,
+  isLogged,
 } from '../utils/auth-methods';
 
 interface AuthCredentialsProps {
@@ -51,6 +53,15 @@ export const AuthContext = createContext({} as ContextProps);
 
 function AuthProvider({ children }: ProviderProps) {
   const [user, setUser] = useState({} as UserProps);
+
+  async function getAuthenticatedUser() {
+    const response = await axios.get<UserProps>('me');
+    setUser(response.data);
+  }
+
+  useEffect(() => {
+    if (isLogged()) getAuthenticatedUser();
+  }, []);
 
   const login = useCallback(async (userPayload: AuthCredentialsProps): Promise<ResultLogin> => {
     try {

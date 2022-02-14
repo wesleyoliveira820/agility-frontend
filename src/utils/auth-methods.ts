@@ -31,3 +31,7 @@ export async function userLogout() {
   Cookies.remove(cookieConfig.token.name);
   Cookies.remove(cookieConfig.refresh_token.name);
 }
+
+export function isLogged() {
+  return !!Cookies.get(appConfig.cookies.token.name);
+}
