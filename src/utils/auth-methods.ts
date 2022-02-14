@@ -25,6 +25,10 @@ export function getToken() {
   return token;
 }
 
+export function getRefreshToken() {
+  return Cookies.get(cookieConfig.refresh_token.name);
+}
+
 export async function userLogout() {
   await axios.delete('logout');
 
@@ -33,5 +37,11 @@ export async function userLogout() {
 }
 
 export function isLogged() {
-  return !!Cookies.get(appConfig.cookies.token.name);
+  const token = Cookies.get(cookieConfig.token.name);
+
+  const refreshToken = Cookies.get(cookieConfig.refresh_token.name);
+
+  if (!token && refreshToken) return true;
+
+  return !!token;
 }
