@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
-import Header from './Header';
-import Hero from './Hero';
+import Header from './components/Header';
+import Hero from './components/Hero';
 
 function Home() {
   return (

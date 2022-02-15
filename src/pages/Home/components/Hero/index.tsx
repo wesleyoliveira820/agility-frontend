@@ -1,10 +1,10 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
-import { useEmail } from '../../../contexts/email-context';
+import { useEmail } from '../../../../contexts/email-context';
 
 import { Container, Content, Form } from './styles';
-import illustration from '../../../assets/home/illustration.png';
+import illustration from '../../../../assets/home/illustration.png';
 
 function Hero() {
   const { handleEmail } = useEmail();
