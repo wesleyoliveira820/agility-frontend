@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import { Form } from '@unform/web';
 import type { FormHandles, SubmitHandler } from '@unform/core';
 
+import { motion } from 'framer-motion';
 import InputText from '../../../../components/InputText';
 import Textarea from '../../../../components/Textarea';
 import Button from '../../../../components/Button';
@@ -55,40 +56,49 @@ function CreateProjectModalForm({
 
   return (
     <Container>
-      <FormLayout>
-        <header id="header-form">
-          <h6>Novo projeto</h6>
-        </header>
+      <motion.div
+        animate={{ scale: [0.8, 1] }}
+        transition={{ duration: 0.5 }}
+        style={{
+          maxWidth: '408px',
+          width: '100%',
+        }}
+      >
+        <FormLayout>
+          <header id="header-form">
+            <h6>Novo projeto</h6>
+          </header>
 
-        <Form ref={formRef} onSubmit={onSubmitForm}>
-          <InputText
-            name="title"
-            placeholder="Nome do projeto"
-            autoFocus
-          />
-          <Textarea
-            bg="primary"
-            name="description"
-            placeholder="Descrição"
-          />
-          <Button
-            type="submit"
-            title="Criar projeto"
-            isLoading={isLoading}
-            disabled={isLoading}
-          />
-        </Form>
+          <Form ref={formRef} onSubmit={onSubmitForm}>
+            <InputText
+              name="title"
+              placeholder="Nome do projeto"
+              autoFocus
+            />
+            <Textarea
+              bg="primary"
+              name="description"
+              placeholder="Descrição"
+            />
+            <Button
+              type="submit"
+              title="Criar projeto"
+              isLoading={isLoading}
+              disabled={isLoading}
+            />
+          </Form>
 
-        <footer>
-          <button
-            type="button"
-            id="button-close"
-            onClick={onClose}
-          >
-            Cancelar
-          </button>
-        </footer>
-      </FormLayout>
+          <footer>
+            <button
+              type="button"
+              id="button-close"
+              onClick={onClose}
+            >
+              Cancelar
+            </button>
+          </footer>
+        </FormLayout>
+      </motion.div>
     </Container>
   );
 }
