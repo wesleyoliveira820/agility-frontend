@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import Card from '../Card';
 import AddCardForm from '../addCardForm';
-import type { IListProps } from '../../../../contexts/project-context';
+import type { ListProps } from '../../../../contexts/project-context';
 
 import { Container, Header, Content } from './styles';
 
@@ -12,7 +12,7 @@ function List({
   title,
   create_cards = false,
   cards,
-}: IListProps) {
+}: ListProps) {
   const [showAddCardForm, setShowAddCardForm] = useState(false);
 
   function toggleShowCardForm() {

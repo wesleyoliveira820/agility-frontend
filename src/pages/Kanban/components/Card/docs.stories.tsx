@@ -1,8 +1,8 @@
 import { Story, Meta } from '@storybook/react';
 import Card from './index';
-import type { ICardProps } from '../../../../contexts/project-context';
+import type { CardProps } from '../../../../contexts/project-context';
 
-const Template: Story<ICardProps> = (args) => <Card {...args} />;
+const Template: Story<CardProps> = (args) => <Card {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

@@ -7,41 +7,41 @@ import {
 } from 'react';
 
 import { toast } from 'react-toastify';
-import type { AxiosResponse, AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
 
 import axios from '../services/api';
 import ws from '../services/websocket';
 
-interface IProjectProviderProps {
+interface ProjectProviderProps {
   children: ReactNode;
 }
 
-interface IRoleProjectProps {
+interface RoleProjectProps {
   id: string;
   slug: string;
 }
 
-interface IProjectProps {
+interface ProjectProps {
   id: string;
   title: string;
-  my_role: IRoleProjectProps;
+  my_role: RoleProjectProps;
   allow_exec: boolean;
 }
 
-export interface ICardProps {
+export interface CardProps {
   id: string;
   title: string;
   created_at: string;
 }
 
-export interface IListProps {
+export interface ListProps {
   id: string;
   title: string;
   create_cards: boolean;
-  cards?: ICardProps[];
+  cards?: CardProps[];
 }
 
-interface IApiErrorResponse {
+interface ApiErrorResponse {
   field: string;
   message: string;
 }
@@ -50,17 +50,21 @@ interface IContextProps {
   getCurrentProject: (projectId: string) => void;
   addNewList: (title: string) => void;
   addNewCard: (title: string) => void;
-  project: IProjectProps;
-  lists: IListProps[];
+  project: ProjectProps;
+  lists: ListProps[];
+  progress: number;
+  isLoading: boolean;
 }
 
 const ProjectContext = createContext({} as IContextProps);
 
-function ProjectProvider({ children }: IProjectProviderProps) {
-  const [project, setProject] = useState({} as IProjectProps);
-  const [lists, setLists] = useState([] as IListProps[]);
+function ProjectProvider({ children }: ProjectProviderProps) {
+  const [project, setProject] = useState({} as ProjectProps);
+  const [lists, setLists] = useState([] as ListProps[]);
+  const [progress, setProgress] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  function addCardInList(card: ICardProps) {
+  function addCardInList(card: CardProps) {
     const alreadyExists = lists[0].cards?.find((item) => item.id === card.id);
 
     if (alreadyExists) return;
@@ -73,7 +77,7 @@ function ProjectProvider({ children }: IProjectProviderProps) {
     setLists([...newBoard]);
   }
 
-  function addListInBoard(list: IListProps) {
+  function addListInBoard(list: ListProps) {
     const findList = lists.find((item) => item.id === list.id);
 
     if (findList) return;
@@ -105,6 +109,12 @@ function ProjectProvider({ children }: IProjectProviderProps) {
 
     setLists(response.data.lists);
     setProject({ ...response.data, lists: undefined });
+
+    setProgress(100);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
   }
 
   async function addNewList(title: string) {
@@ -113,8 +123,8 @@ function ProjectProvider({ children }: IProjectProviderProps) {
         title,
         project_id: project.id,
       });
-    } catch (_error) {
-      const { response }: AxiosError<IApiErrorResponse[]> = _error;
+    } catch (error: any) {
+      const { response }: AxiosError<ApiErrorResponse[]> = error;
 
       toast.error(response?.data[0].message);
     }
@@ -134,6 +144,8 @@ function ProjectProvider({ children }: IProjectProviderProps) {
       addNewCard,
       project,
       lists,
+      progress,
+      isLoading,
     }}
     >
       { children }
