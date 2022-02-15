@@ -1,118 +1,78 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import type { AxiosError } from 'axios';
-
-import axios from '../../services/api';
-import { createProjectValidator } from '../../validators/project';
+import { useMutation, useQuery } from 'react-query';
+import { AxiosError } from 'axios';
 
 import Header from '../../components/Header';
 import Button from '../../components/Button';
-import Form from './Form';
-import ProjectCard from './ProjectCard';
-import ModalForm from './ModalForm';
-import ProjectSkeleton from './ProjectSkeleton';
+import { CreateFirstProjectForm } from './components/CreateFirstProjectForm';
+import ProjectCard from './components/ProjectCard';
+import { CreateProjectModalForm } from './components/CreateProjectModalForm';
+import ProjectSkeleton from './components/ProjectSkeleton';
+
+import api from '../../services/api';
+import { queryClient } from '../../services/query-client';
 
 import { ProjectContainer, ProjectContent } from './styles';
 
-interface IProjectProps {
+interface FormProps {
+  title: string;
+  description?: string;
+}
+
+interface ProjectProps {
   id: string;
   title: string;
   description?: string;
 }
 
-interface IFormProps {
-  title: string;
-  description?: string;
-}
-
-interface IFormErrorProps {
-  [key: string]: string;
-}
-
-interface IApiErrorResponse {
-  field: string;
-  message: string;
-}
-
 function Projects() {
-  const [projects, setProjects] = useState<IProjectProps[]>([]);
-  const [formError, setFormError] = useState<IFormErrorProps>({});
-  const [showModal, setShowModal] = useState(false);
-  const [notHasProjects, setNoHasProjects] = useState(false);
-
-  async function validateFormData(projectPayload: IFormProps) {
-    const validation = await createProjectValidator(projectPayload);
-
-    if (validation) {
-      setFormError(validation);
-      return false;
-    }
-
-    return true;
-  }
-
-  async function createProjectInApi(projectPayload: IFormProps): Promise<IProjectProps | void> {
-    try {
-      const response = await axios.post('projects', projectPayload);
-
-      return response.data;
-    } catch (error: any) {
-      const { response }: AxiosError<IApiErrorResponse[]> = error;
-
-      if (response?.data[0]?.message) {
-        const { field, message } = response.data[0];
-        return setFormError({ [field]: message });
-      }
-
-      return setFormError({});
-    }
-  }
+  const [showCreateProjectFormModal, setShowCreateProjectFormModal] = useState(false);
 
   function toggleModal() {
-    if (formError) setFormError({});
-    setShowModal(!showModal);
+    setShowCreateProjectFormModal(!showCreateProjectFormModal);
   }
 
-  async function onSubmitForm(projectPayload: IFormProps) {
-    const validation = await validateFormData(projectPayload);
-
-    if (!validation) return;
-
-    const project = await createProjectInApi(projectPayload);
-
-    if (!project) return;
-
-    if (showModal) toggleModal();
-
-    setProjects([project, ...projects]);
-
-    setNoHasProjects(false);
+  async function getProjectsRequest() {
+    const response = await api.get('projects');
+    return response.data;
   }
 
-  async function getProjectsInApi() {
-    const response = await axios.get('projects');
+  async function postProjectRequest(projectData: FormProps) {
+    const response = await api.post('projects', projectData);
+    return response.data;
+  }
 
-    if (response.data.length === 0) {
-      return setNoHasProjects(true);
+  async function handleCreateNewProject(projectData: FormProps) {
+    const newProject = await postProjectRequest(projectData);
+
+    if (showCreateProjectFormModal) {
+      toggleModal();
     }
 
-    setProjects(response.data);
+    return newProject;
   }
 
-  useEffect(() => {
-    getProjectsInApi();
-  }, []);
+  const projects = useQuery('projects', getProjectsRequest, {
+    refetchOnWindowFocus: false,
+  });
+
+  const changeProjects = useMutation<ProjectProps[], AxiosError, FormProps>('projectsMutation', handleCreateNewProject, {
+    onSuccess: (data) => {
+      queryClient.setQueryData('projects', [data, ...projects.data]);
+    },
+  });
 
   return (
     <>
       <Helmet>
-        <title>Agility</title>
+        <title>Meus projetos | Agility</title>
       </Helmet>
       <Header />
-      {projects.length === 0 && !notHasProjects && (
+      {projects.isLoading && (
         <ProjectSkeleton />
       )}
-      {projects.length > 0 && (
+      {projects.data?.length > 0 && (
         <ProjectContainer>
           <ProjectContent>
             <header>
@@ -124,7 +84,7 @@ function Projects() {
               />
             </header>
             <ul>
-              {projects.map((project) => (
+              {projects.data.map((project: any) => (
                 <ProjectCard
                   key={project.id}
                   project={project}
@@ -134,17 +94,18 @@ function Projects() {
           </ProjectContent>
         </ProjectContainer>
       )}
-      {notHasProjects && (
-        <Form
-          onSubmit={onSubmitForm}
-          errors={formError}
+      {projects.data?.length === 0 && !projects.isLoading && (
+        <CreateFirstProjectForm
+          onSubmit={changeProjects.mutate}
+          isLoading={changeProjects.isLoading}
         />
       )}
-      {showModal && (
-        <ModalForm
-          onSubmit={onSubmitForm}
+      {showCreateProjectFormModal && (
+        <CreateProjectModalForm
+          onSubmit={changeProjects.mutate}
           onClose={toggleModal}
-          errors={formError}
+          errors={changeProjects.error?.response?.data}
+          isLoading={changeProjects.isLoading}
         />
       )}
     </>

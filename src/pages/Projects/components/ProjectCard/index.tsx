@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { LinkStyled, Content } from './styles';
 
-interface IProjectProps {
+interface ProjectCardProps {
   project: {
     id: string;
     title: string;
@@ -9,7 +9,7 @@ interface IProjectProps {
   }
 }
 
-function ProjectCard({ project }: IProjectProps) {
+function ProjectCard({ project }: ProjectCardProps) {
   return (
     <LinkStyled
       to={`/project/${project.id}`}
