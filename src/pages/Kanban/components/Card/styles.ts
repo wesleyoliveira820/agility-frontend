@@ -7,7 +7,7 @@ export const Container = styled.div`
   border-radius: 5px;
 
   background-color: ${(props) => props.theme.colors.base.secondary};
-  box-shadow: 0 1px 4px 0 rgba(206, 218, 230, 0.8);
+  box-shadow: 0 1px 3px 0 rgba(206, 218, 230, 0.8);
 
   header {
     display: flex;
