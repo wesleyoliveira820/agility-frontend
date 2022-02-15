@@ -12,6 +12,7 @@ interface IColors {
   text: {
     primary: string;
     secondary: string;
+    banner: string;
   }
   divider: {
     primary: string;

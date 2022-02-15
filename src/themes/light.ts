@@ -14,6 +14,7 @@ export default {
     text: {
       primary: pallete.gray[500],
       secondary: pallete.gray[400],
+      banner: pallete.white,
     },
     divider: {
       primary: pallete.gray[300],

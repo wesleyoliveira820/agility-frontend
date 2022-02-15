@@ -1,8 +1,8 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { lighten, darken } from 'polished';
 
 const circleLoader = keyframes`
-   0% { transform: rotate(0deg);}
+  0% { transform: rotate(0deg);}
   100% {transform: rotate(360deg);}
 `;
 
@@ -18,7 +18,7 @@ export const Container = styled.button<IButtonProps>`
   border-radius: 3px;
 
   background-color: ${(props) => props.theme.colors.brand.primary};
-  color: #FFFFFF;
+  color: ${(props) => props.theme.colors.text.banner};
 
   cursor: pointer;
 
@@ -35,7 +35,7 @@ export const Container = styled.button<IButtonProps>`
     `}
   }
 
-  ${(props) => props.medium && `
+  ${(props) => props.medium && css`
     max-width: 360px;
     width: 100%;
     height: 44px;
@@ -51,12 +51,13 @@ export const Container = styled.button<IButtonProps>`
     }
   `}
 
-${(props) => props.small && `
+  ${(props) => props.small && css`
     max-width: 145px;
     width: 100%;
     height: 32px;
 
     font-size: 14px;
+    line-height: 24px;
 
     #button-loader {
       width: 15px;
