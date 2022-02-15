@@ -1,33 +1,8 @@
 import 'styled-components';
-
-interface IColors {
-  brand: {
-    primary: string;
-    secondary: string;
-  }
-  base: {
-    primary: string;
-    secondary: string;
-  }
-  text: {
-    primary: string;
-    secondary: string;
-    banner: string;
-  }
-  divider: {
-    primary: string;
-    secondary: string;
-    tertiary: string;
-  }
-  helpers: {
-    success: string;
-    warning: string;
-    error: string;
-  }
-}
+import themeStyles from '../themes/light';
 
 declare module 'styled-components' {
-  export interface DefaultTheme {
-    colors: IColors
-  }
+  type ThemeType = typeof themeStyles;
+
+  export interface DefaultTheme extends ThemeType {}
 }

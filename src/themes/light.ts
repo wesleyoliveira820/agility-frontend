@@ -1,4 +1,3 @@
-import { DefaultTheme } from 'styled-components';
 import pallete from './pallete';
 
 export default {
@@ -27,4 +26,4 @@ export default {
       error: pallete.red[500],
     },
   },
-} as DefaultTheme;
+};
