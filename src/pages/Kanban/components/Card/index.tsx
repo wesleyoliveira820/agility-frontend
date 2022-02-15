@@ -1,10 +1,10 @@
-import convertDate from '../../../utils/convert-date-to-string';
-import type { ICardProps } from '../../../contexts/project-context';
+import convertDate from '../../../../utils/convert-date-to-string';
+import type { ICardProps } from '../../../../contexts/project-context';
 
 import { Container } from './styles';
 
-import dotsHorizontal from '../../../assets/kanban/dots-horizontal.svg';
-import calendar from '../../../assets/kanban/calendar.svg';
+import dotsHorizontal from '../../../../assets/kanban/dots-horizontal.svg';
+import calendar from '../../../../assets/kanban/calendar.svg';
 
 function Card({ title, created_at }: ICardProps) {
   return (

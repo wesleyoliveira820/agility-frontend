@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import Card from '../Card';
 import AddCardForm from '../addCardForm';
-import type { IListProps } from '../../../contexts/project-context';
+import type { IListProps } from '../../../../contexts/project-context';
 
 import { Container, Header, Content } from './styles';
 
-import dotsVerticalWhite from '../../../assets/kanban/dots-vertical-white.svg';
+import dotsVerticalWhite from '../../../../assets/kanban/dots-vertical-white.svg';
 
 function List({
   title,

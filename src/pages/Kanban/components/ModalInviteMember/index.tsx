@@ -6,13 +6,13 @@ import { toast } from 'react-toastify';
 import type { SubmitHandler, FormHandles } from '@unform/core';
 import type { AxiosError, AxiosResponse } from 'axios';
 
-import axios from '../../../services/api';
-import FormLayout from '../../../layouts/Form';
-import InputText from '../../../components/InputText';
-import Button from '../../../components/Button';
+import axios from '../../../../services/api';
+import FormLayout from '../../../../layouts/Form';
+import InputText from '../../../../components/InputText';
+import Button from '../../../../components/Button';
 
 import { Container } from './styles';
-import { useAuth } from '../../../hooks/use-auth';
+import { useAuth } from '../../../../hooks/use-auth';
 
 interface IModalProps {
   toggleInviteModal?: () => void;

@@ -5,7 +5,7 @@ import List from '../List';
 import AddListForm from '../addListForm';
 
 import { Container, ButtonAddList } from './styles';
-import { useProject } from '../../../contexts/project-context';
+import { useProject } from '../../../../contexts/project-context';
 
 interface IParamProps {
   projectId: string;

@@ -1,12 +1,12 @@
 import { useRef } from 'react';
 import { FormHandles, SubmitHandler } from '@unform/core';
 
-import InputText from '../../../components/InputText';
+import InputText from '../../../../components/InputText';
 
 import { Container, Form } from './styles';
 
-import closeForm from '../../../assets/kanban/window-close.svg';
-import { useProject } from '../../../contexts/project-context';
+import closeForm from '../../../../assets/kanban/window-close.svg';
+import { useProject } from '../../../../contexts/project-context';
 
 interface IAddCardFormProps {
   onClose: () => void;

@@ -2,8 +2,8 @@ import { useState, FormEvent } from 'react';
 
 import { Container } from './styles';
 
-import windowClose from '../../../assets/kanban/window-close.svg';
-import { useProject } from '../../../contexts/project-context';
+import windowClose from '../../../../assets/kanban/window-close.svg';
+import { useProject } from '../../../../contexts/project-context';
 
 interface IAddListFormProps {
   onClose: () => void;
