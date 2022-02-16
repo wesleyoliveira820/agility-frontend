@@ -105,6 +105,8 @@ function ProjectProvider({ children }: ProjectProviderProps) {
   }, [project]);
 
   async function getCurrentProject(projectId: string) {
+    setProgress(20);
+
     const response = await axios.get(`projects/${projectId}`);
 
     setLists(response.data.lists);
