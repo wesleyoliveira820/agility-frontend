@@ -14,7 +14,7 @@ export const Container = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    background-color: #DFE2E4;
+    background-color: ${(props) => props.theme.colors.base.tertiary};
     padding: 0 8px;
 
     border-top-left-radius: 5px;

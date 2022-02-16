@@ -9,6 +9,7 @@ export default {
     base: {
       primary: pallete.gray[50],
       secondary: pallete.white,
+      tertiary: pallete.gray[75],
     },
     text: {
       primary: pallete.gray[500],
