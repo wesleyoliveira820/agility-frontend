@@ -14,30 +14,30 @@ import Button from '../../../../components/Button';
 import { Container } from './styles';
 import { useAuth } from '../../../../hooks/use-auth';
 
-interface IModalProps {
+interface ModalProps {
   toggleInviteModal?: () => void;
 }
 
-interface IFormProps {
+interface FormProps {
   emails: string
 }
 
-interface IParamsProps {
+type ParamsProps = {
   projectId: string;
 }
 
-interface IResponseApi {
+interface ResponseApi {
   message: string;
 }
 
-type SuccessApi = AxiosResponse<IResponseApi>;
+type SuccessApi = AxiosResponse<ResponseApi>;
 
-type ErrorApi = AxiosError<IResponseApi[]>
+type ErrorApi = AxiosError<ResponseApi[]>
 
-function ModalInviteMember({ toggleInviteModal }: IModalProps) {
+function ModalInviteMember({ toggleInviteModal }: ModalProps) {
   const formRef = useRef<FormHandles>(null);
   const { user } = useAuth();
-  const { projectId } = useParams<IParamsProps>();
+  const { projectId } = useParams<ParamsProps>();
   const [isLoading, setIsLoading] = useState(false);
 
   function formatEmailsInArray(emails: string) {
@@ -77,7 +77,7 @@ function ModalInviteMember({ toggleInviteModal }: IModalProps) {
     }
   }
 
-  const onSubmitForm: SubmitHandler<IFormProps> = async ({ emails }) => {
+  const onSubmitForm: SubmitHandler<FormProps> = async ({ emails }) => {
     formRef.current?.setErrors({});
 
     setIsLoading(true);
