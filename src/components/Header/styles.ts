@@ -49,10 +49,6 @@ export const Container = styled.header`
         height: 32px;
         border-left: 2px solid ${(props) => props.theme.colors.divider.tertiary};
       }
-
-      button {
-        width: 145px;
-      }
     }
   }
 `;

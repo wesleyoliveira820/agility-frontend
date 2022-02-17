@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+
 import Avatar from '../Avatar';
 
 import {
@@ -9,10 +11,10 @@ import {
 
 import logo from '../../assets/global/logo.svg';
 import settings from '../../assets/global/settings.svg';
-import Button from '../Button';
 import ModalSettings from './ModalSettings';
 import { useProject } from '../../contexts/project-context';
 import { useAuth } from '../../hooks/use-auth';
+import { IconButton } from '../IconButton';
 
 interface IHeaderProps {
   toggleInviteModal?: () => void;
@@ -44,11 +46,12 @@ function Header({ toggleInviteModal }: IHeaderProps) {
         <div id="tools">
           <div id="project-info-actions">
             {project?.my_role?.slug === 'admin' && (
-            <Button
-              title="Adicionar membro"
-              small
-              onClick={toggleInviteModal}
-            />
+              <IconButton
+                title="Adicionar membro"
+                size="small"
+                Icon={AiOutlineUserAdd}
+                onClick={toggleInviteModal}
+              />
             )}
             {project?.my_role?.slug === 'admin' && <div id="divider" />}
           </div>
