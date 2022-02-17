@@ -1,13 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { AvatarContainerStyleProps } from './avatar.types';
 
-interface IAvatarProps {
-  size: 'small' | 'medium' | 'large';
-  withBorder?: boolean;
-  bg: string;
-}
-
-export const Container = styled.div<IAvatarProps>`
-  ${(props) => props.size === 'small' && `
+export const Container = styled.div<AvatarContainerStyleProps>`
+  ${(props) => props.size === 'small' && css`
     height: 32px;
     width: 32px;
 
@@ -16,7 +11,7 @@ export const Container = styled.div<IAvatarProps>`
     }
   `}
 
-  ${(props) => props.size === 'medium' && `
+  ${(props) => props.size === 'medium' && css`
     height: 40px;
     width: 40px;
 
@@ -25,7 +20,7 @@ export const Container = styled.div<IAvatarProps>`
     }
   `}
 
-  ${(props) => props.size === 'large' && `
+  ${(props) => props.size === 'large' && css`
     height: 48px;
     width: 48px;
 
@@ -34,7 +29,7 @@ export const Container = styled.div<IAvatarProps>`
     }
   `}
 
-  ${(props) => props.withBorder && `
+  ${(props) => props.withBorder && css`
     border: 1px solid #FFFFFF;
   `}
 

@@ -1,7 +1,8 @@
 import { Story, Meta } from '@storybook/react';
-import Avatar, { IAvatarProps } from './index';
+import { AvatarProps } from './avatar.types';
+import Avatar from './index';
 
-const Template: Story<IAvatarProps> = (args) => <Avatar {...args} />;
+const Template: Story<AvatarProps> = (args) => <Avatar {...args} />;
 
 export const Default = Template.bind({});
 
@@ -18,7 +19,7 @@ Large.args = {
 };
 
 export default {
-  title: 'Components/Avatar',
+  title: 'Data/Avatar',
   component: Avatar,
   parameters: {
     docs: {

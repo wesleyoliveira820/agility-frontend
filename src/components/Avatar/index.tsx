@@ -1,23 +1,20 @@
+import { useTheme } from 'styled-components';
+import { AvatarProps } from './avatar.types';
 import { Container } from './styles';
-
-export interface IAvatarProps {
-  size: 'small' | 'medium' | 'large'
-  initial_name?: string;
-  withBorder?: boolean;
-  bg: string;
-}
 
 function Avatar({
   initial_name = 'N',
   size = 'medium',
   withBorder = false,
-  bg = '#7159c1',
-}: IAvatarProps) {
+  bg,
+}: AvatarProps) {
+  const { colors } = useTheme();
+
   return (
     <Container
       size={size}
       withBorder={withBorder}
-      bg={bg}
+      bg={bg || colors.brand.primary}
     >
       <h6>{initial_name}</h6>
     </Container>
