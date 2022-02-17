@@ -45,7 +45,7 @@ WithCards.args = {
 };
 
 export default {
-  title: 'Components/List',
+  title: 'Data/List',
   component: List,
   parameters: {
     docs: {
