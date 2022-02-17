@@ -9,7 +9,7 @@ import { CreateFirstProjectForm } from './components/CreateFirstProjectForm';
 import ProjectCard from './components/ProjectCard';
 import { CreateProjectModalForm } from './components/CreateProjectModalForm';
 import ProjectSkeleton from './components/ProjectSkeleton';
-
+import { ErrorRequest } from '../../components/ErrorRequest';
 import api from '../../services/api';
 import { queryClient } from '../../services/query-client';
 
@@ -53,12 +53,14 @@ function Projects() {
     return newProject;
   }
 
-  const projects = useQuery('projects', getProjectsRequest, {
+  const projects = useQuery<ProjectProps[], AxiosError>('projects', getProjectsRequest, {
     refetchOnWindowFocus: false,
+    refetchOnReconnect: 'always',
   });
 
   const changeProjects = useMutation<ProjectProps[], AxiosError, FormProps>('projectsMutation', handleCreateNewProject, {
     onSuccess: (data) => {
+      if (!projects.data) return;
       queryClient.setQueryData('projects', [data, ...projects.data]);
     },
   });
@@ -72,7 +74,7 @@ function Projects() {
       {projects.isLoading && (
         <ProjectSkeleton />
       )}
-      {projects.data?.length > 0 && (
+      {projects.data && projects.data.length > 0 && (
         <ProjectContainer>
           <ProjectContent>
             <header>
@@ -84,7 +86,7 @@ function Projects() {
               />
             </header>
             <ul>
-              {projects.data.map((project: any) => (
+              {projects.data?.map((project: any) => (
                 <ProjectCard
                   key={project.id}
                   project={project}
@@ -93,6 +95,12 @@ function Projects() {
             </ul>
           </ProjectContent>
         </ProjectContainer>
+      )}
+      {projects.isError && (
+        <ErrorRequest
+          statusError={projects.error.response?.status}
+          message="Desculpe, não foi possível carregar os projetos."
+        />
       )}
       {projects.data?.length === 0 && !projects.isLoading && (
         <CreateFirstProjectForm
