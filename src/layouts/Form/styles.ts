@@ -16,12 +16,14 @@ export const Container = styled.div`
 
     h6 {
       font-size: 21px;
+      line-height: 31.5px;
       font-weight: 500;
     }
 
     p {
       font-size: 14px;
       line-height: 22px;
+      margin-top: 2px;
       color: ${(props) => props.theme.colors.text.secondary};
     }
   }

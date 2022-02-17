@@ -56,49 +56,40 @@ function CreateProjectModalForm({
 
   return (
     <Container>
-      <motion.div
-        animate={{ scale: [0.8, 1] }}
-        transition={{ duration: 0.5 }}
-        style={{
-          maxWidth: '408px',
-          width: '100%',
-        }}
-      >
-        <FormLayout>
-          <header id="header-form">
-            <h6>Novo projeto</h6>
-          </header>
+      <FormLayout>
+        <header id="header-form">
+          <h6>Novo projeto</h6>
+        </header>
 
-          <Form ref={formRef} onSubmit={onSubmitForm}>
-            <InputText
-              name="title"
-              placeholder="Nome do projeto"
-              autoFocus
-            />
-            <Textarea
-              bg="primary"
-              name="description"
-              placeholder="Descrição"
-            />
-            <Button
-              type="submit"
-              title="Criar projeto"
-              isLoading={isLoading}
-              disabled={isLoading}
-            />
-          </Form>
+        <Form ref={formRef} onSubmit={onSubmitForm}>
+          <InputText
+            name="title"
+            placeholder="Nome do projeto"
+            autoFocus
+          />
+          <Textarea
+            bg="primary"
+            name="description"
+            placeholder="Descrição"
+          />
+          <Button
+            type="submit"
+            title="Criar projeto"
+            isLoading={isLoading}
+            disabled={isLoading}
+          />
+        </Form>
 
-          <footer>
-            <button
-              type="button"
-              id="button-close"
-              onClick={onClose}
-            >
-              Cancelar
-            </button>
-          </footer>
-        </FormLayout>
-      </motion.div>
+        <footer>
+          <button
+            type="button"
+            id="button-close"
+            onClick={onClose}
+          >
+            Cancelar
+          </button>
+        </footer>
+      </FormLayout>
     </Container>
   );
 }

@@ -99,8 +99,8 @@ function ModalInviteMember({ toggleInviteModal }: IModalProps) {
         <header id="header-form">
           <h6>Adicionar Membro</h6>
           <p>
-            Convide 1 ou mais pessoas para participar do seu projeto.
-            Separe os email por vírgula caso seja mais de 1.
+            Convide mais pessoas para participar do seu projeto.
+            Separe múltiplos e-mails usando vírgula.
           </p>
         </header>
 

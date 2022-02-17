@@ -1,21 +1,28 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadeAnimation = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
 
 export const Container = styled.div`
   position: absolute;
-  top: 56px;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 
   position: fixed;
 
-  background-color: rgba(0, 0, 0, .7);
+  background-color: rgba(0, 0, 0, .5);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  animation: ${fadeAnimation} 0.2s;
+
   padding: 0 16px;
 
-  z-index: 1;
+  z-index: 2;
 `;
