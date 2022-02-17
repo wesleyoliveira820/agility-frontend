@@ -1,16 +1,14 @@
 import styled, { css, keyframes } from 'styled-components';
 import { lighten, darken } from 'polished';
 
+import { ButtonContainerStyleProps } from './button.types';
+
 const circleLoader = keyframes`
   0% { transform: rotate(0deg);}
   100% {transform: rotate(360deg);}
 `;
 
-interface IButtonProps {
-  [key: string]: any;
-}
-
-export const Container = styled.button<IButtonProps>`
+export const Container = styled.button<ButtonContainerStyleProps>`
   font-family: 'Open Sans';
   font-weight: bold;
 
@@ -30,7 +28,7 @@ export const Container = styled.button<IButtonProps>`
   }
 
   &:hover {
-    ${(props) => !props.disabled && `
+    ${(props) => !props.disabled && css`
       background-color: ${darken(0.1, props.theme.colors.brand.primary)};
     `}
   }

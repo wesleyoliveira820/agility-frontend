@@ -1,5 +1,7 @@
 import { Story, Meta } from '@storybook/react';
-import Button, { ButtonProps } from './index';
+
+import { ButtonProps } from './button.types';
+import Button from './index';
 
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
@@ -31,7 +33,7 @@ Small.args = {
 };
 
 export default {
-  title: 'Components/Buttons/Only Text',
+  title: 'Form/Buttons/Only Text',
   component: Button,
   parameters: {
     docs: {
