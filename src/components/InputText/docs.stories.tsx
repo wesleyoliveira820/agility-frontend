@@ -1,6 +1,8 @@
 import { Story, Meta } from '@storybook/react';
 import { Form } from '@unform/web';
-import InputText, { InputProps } from './index';
+
+import InputText from './index';
+import { InputProps } from './input-text.types';
 
 const Template: Story<InputProps> = (args) => <InputText {...args} />;
 
@@ -20,7 +22,7 @@ SecondaryBackground.args = {
 };
 
 export default {
-  title: 'Components/Inputs/Text',
+  title: 'Form/Inputs/Text',
   component: InputText,
   parameters: {
     docs: {

@@ -2,13 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
 
 import { Container } from './styles';
-
-interface IInputProps {
-  name: string;
-  bg?: 'primary' | 'secondary';
-}
-
-export type InputProps = JSX.IntrinsicElements['input'] & IInputProps;
+import { InputProps } from './input-text.types';
 
 function InputText({
   name,
