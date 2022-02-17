@@ -4,7 +4,6 @@ import { useMutation, useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 
 import Header from '../../components/Header';
-import Button from '../../components/Button';
 import { CreateFirstProjectForm } from './components/CreateFirstProjectForm';
 import ProjectCard from './components/ProjectCard';
 import { CreateProjectModalForm } from './components/CreateProjectModalForm';
@@ -12,6 +11,7 @@ import ProjectSkeleton from './components/ProjectSkeleton';
 import { ErrorRequest } from '../../components/ErrorRequest';
 import api from '../../services/api';
 import { queryClient } from '../../services/query-client';
+import { IconButton } from '../../components/IconButton';
 
 import { ProjectContainer, ProjectContent } from './styles';
 
@@ -79,10 +79,10 @@ function Projects() {
           <ProjectContent>
             <header>
               <h6>Meus projetos</h6>
-              <Button
-                onClick={toggleModal}
+              <IconButton
                 title="Novo projeto"
-                small
+                size="small"
+                onClick={toggleModal}
               />
             </header>
             <ul>
