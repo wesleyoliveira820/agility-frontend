@@ -1,11 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { TextareaContainerStyleProps } from './textarea.types';
 
-interface ITextareaProps {
-  error?: boolean;
-  bg: 'primary' | 'secondary';
-}
-
-export const Container = styled.div<ITextareaProps>`
+export const Container = styled.div<TextareaContainerStyleProps>`
   display: flex;
   flex-direction: column;
 
@@ -23,7 +19,7 @@ export const Container = styled.div<ITextareaProps>`
 
     border: 1px solid ${(props) => props.theme.colors.divider.tertiary};
 
-    ${(props) => props.error && `
+    ${(props) => props.error && css`
       border: 2px solid ${props.theme.colors.helpers.error};
       padding: 12px 15px;
     `}

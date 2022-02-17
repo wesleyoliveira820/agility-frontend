@@ -1,6 +1,8 @@
 import { Story, Meta } from '@storybook/react';
 import { Form } from '@unform/web';
-import Textarea, { TextareaProps } from './index';
+
+import Textarea from './index';
+import { TextareaProps } from './textarea.types';
 
 const Template: Story<TextareaProps> = (args) => <Textarea {...args} />;
 
@@ -20,7 +22,7 @@ SecondaryBackground.args = {
 };
 
 export default {
-  title: 'Components/Textarea',
+  title: 'Form/Textarea',
   component: Textarea,
   decorators: [
     (Component) => (

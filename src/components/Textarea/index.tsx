@@ -2,13 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
 
 import { Container } from './styles';
-
-interface ITextareaProps {
-  name: string;
-  bg: 'primary' | 'secondary';
-}
-
-export type TextareaProps = JSX.IntrinsicElements['textarea'] & ITextareaProps;
+import { TextareaProps } from './textarea.types';
 
 function Textarea({
   name,
