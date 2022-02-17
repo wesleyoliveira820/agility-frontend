@@ -11,7 +11,7 @@ Default.args = {
 };
 
 export default {
-  title: 'Components/Card',
+  title: 'Data/Card',
   component: Card,
   parameters: {
     docs: {
