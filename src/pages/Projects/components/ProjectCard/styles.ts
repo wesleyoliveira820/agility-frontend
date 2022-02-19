@@ -9,6 +9,8 @@ export const Content = styled.li`
   background-color: ${(props) => props.theme.colors.base.secondary};
   height: 157px;
 
+  list-style-type: none;
+
   border: 2px solid transparent;
   border-radius: 3px;
 

@@ -1,13 +1,7 @@
 import { memo } from 'react';
-import { LinkStyled, Content } from './styles';
 
-interface ProjectCardProps {
-  project: {
-    id: string;
-    title: string;
-    description?: string;
-  }
-}
+import { ProjectCardProps } from './project-card.types';
+import { LinkStyled, Content } from './styles';
 
 function ProjectCard({ project }: ProjectCardProps) {
   return (
