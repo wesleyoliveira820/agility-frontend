@@ -19,7 +19,7 @@ Small.args = {
 };
 
 export default {
-  title: 'Form/Buttons/With Icon',
+  title: 'Form/Icon Button',
   component: IconButton,
   parameters: {
     docs: {

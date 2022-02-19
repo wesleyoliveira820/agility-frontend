@@ -22,7 +22,7 @@ SecondaryBackground.args = {
 };
 
 export default {
-  title: 'Form/Inputs/Text',
+  title: 'Form/Text Input',
   component: InputText,
   parameters: {
     docs: {

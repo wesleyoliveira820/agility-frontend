@@ -33,7 +33,7 @@ Small.args = {
 };
 
 export default {
-  title: 'Form/Buttons/Only Text',
+  title: 'Form/Button',
   component: Button,
   parameters: {
     docs: {

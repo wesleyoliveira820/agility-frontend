@@ -30,7 +30,7 @@ Default.args = {
 };
 
 export default {
-  title: 'Overlay/Modal form',
+  title: 'Overlay/Modal Form',
   component: ModalForm,
   parameters: {
     docs: {
