@@ -1,40 +1,23 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
-
-import type { SubmitHandler, FormHandles } from '@unform/core';
-import type { AxiosError, AxiosResponse } from 'axios';
+import type { FormHandles } from '@unform/core';
 
 import axios from '../../../../services/api';
-import FormLayout from '../../../../layouts/Form';
-import InputText from '../../../../components/InputText';
 import Button from '../../../../components/Button';
-
-import { Container } from './styles';
+import InputText from '../../../../components/InputText';
+import { ModalForm } from '../../../../components/ModalForm';
 import { useAuth } from '../../../../hooks/use-auth';
 
-interface ModalProps {
-  toggleInviteModal?: () => void;
-}
+import {
+  FormProps,
+  ModalInviteMemberProps,
+  ParamsProps,
+  PostInviteError,
+  PostInviteResponse,
+} from './modal-invite-member.types';
 
-interface FormProps {
-  emails: string
-}
-
-type ParamsProps = {
-  projectId: string;
-}
-
-interface ResponseApi {
-  message: string;
-}
-
-type SuccessApi = AxiosResponse<ResponseApi>;
-
-type ErrorApi = AxiosError<ResponseApi[]>
-
-function ModalInviteMember({ toggleInviteModal }: ModalProps) {
+function ModalInviteMember({ toggleInviteModal }: ModalInviteMemberProps) {
   const formRef = useRef<FormHandles>(null);
   const { user } = useAuth();
   const { projectId } = useParams<ParamsProps>();
@@ -42,89 +25,77 @@ function ModalInviteMember({ toggleInviteModal }: ModalProps) {
 
   function formatEmailsInArray(emails: string) {
     const formattedEmails = emails.split(',');
-
     return formattedEmails.map((email) => email.trim());
   }
 
-  function validateFormData(emails: string[]): true | void {
-    if (emails.includes(user.email)) {
-      return formRef.current?.setErrors({
-        emails: 'Você não pode convidar a si mesmo.',
-      });
+  function validateFormData(emails: string[]) {
+    if (emails.length === 1 && emails[0] === '') {
+      return {
+        emails: 'Este campo é obrigatório.',
+      };
     }
 
-    return true;
+    if (emails.includes(user.email)) {
+      return {
+        emails: 'Você não pode convidar a si mesmo.',
+      };
+    }
   }
 
   async function sendInvites(emails: string[]) {
+    const response = await axios.post<PostInviteResponse>('invites', {
+      emails,
+      project_id: projectId,
+    });
+
+    return response.data;
+  }
+
+  async function onSubmitForm({ emails }: FormProps) {
     try {
-      const response: SuccessApi = await axios.post('invites', {
-        emails,
-        project_id: projectId,
-      });
+      const formattedEmails = formatEmailsInArray(emails);
 
-      toast.success(response.data.message);
+      const validation = validateFormData(formattedEmails);
 
-      return true;
-    } catch (_error: any) {
-      const { response }: ErrorApi = _error;
+      if (validation) return formRef.current?.setErrors(validation);
 
-      formRef.current?.setErrors({
-        emails: response?.data[0].message || '',
-      });
+      formRef.current?.setErrors({});
+      setIsLoading(true);
 
-      return false;
+      const invitationsSent = await sendInvites(formattedEmails);
+
+      toast.success(invitationsSent.message);
+
+      if (toggleInviteModal) toggleInviteModal();
+    } catch (error: any) {
+      const { response }: PostInviteError = error;
+
+      setIsLoading(false);
+
+      if (response && response.data[0].message) {
+        formRef.current?.setErrors({
+          emails: response?.data[0].message,
+        });
+      }
     }
   }
 
-  const onSubmitForm: SubmitHandler<FormProps> = async ({ emails }) => {
-    formRef.current?.setErrors({});
-
-    setIsLoading(true);
-
-    const formattedEmails = formatEmailsInArray(emails);
-
-    validateFormData(formattedEmails);
-
-    const invitationsSent = await sendInvites(formattedEmails);
-
-    if (!invitationsSent) return setIsLoading(false);
-
-    if (toggleInviteModal) toggleInviteModal();
-  };
-
   return (
-    <Container>
-      <FormLayout>
-        <header id="header-form">
-          <h6>Adicionar Membro</h6>
-          <p>
-            Convide mais pessoas para participar do seu projeto.
-            Separe múltiplos e-mails usando vírgula.
-          </p>
-        </header>
-
-        <Form onSubmit={onSubmitForm} ref={formRef}>
-          <InputText name="emails" placeholder="Email(s)" autoFocus />
-          <Button
-            type="submit"
-            title="Enviar convite(s)"
-            isLoading={isLoading}
-            disabled={isLoading}
-          />
-        </Form>
-
-        <footer>
-          <button
-            type="button"
-            id="button-close"
-            onClick={toggleInviteModal}
-          >
-            Cancelar
-          </button>
-        </footer>
-      </FormLayout>
-    </Container>
+    <ModalForm
+      modalTitle="Adicionar membro"
+      modalDescription="Convide mais pessoas para participar do seu projeto. Separe múltiplos e-mails usando vírgula."
+      formRef={formRef}
+      onSubmit={onSubmitForm}
+      onClose={toggleInviteModal}
+    >
+      <InputText name="emails" placeholder="Email(s)" autoFocus />
+      <Button
+        type="submit"
+        title="Enviar convite(s)"
+        isLoading={isLoading}
+        disabled={isLoading}
+      />
+    </ModalForm>
   );
 }
 
