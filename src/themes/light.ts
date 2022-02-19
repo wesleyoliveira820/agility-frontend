@@ -26,5 +26,6 @@ export default {
       warning: pallete.yellow[500],
       error: pallete.red[500],
     },
+    overlay: pallete.black,
   },
 };
