@@ -108,14 +108,13 @@ function Projects() {
           isLoading={changeProjects.isLoading}
         />
       )}
-      {showCreateProjectFormModal && (
-        <CreateProjectModalForm
-          onSubmit={changeProjects.mutate}
-          onClose={toggleModal}
-          errors={changeProjects.error?.response?.data}
-          isLoading={changeProjects.isLoading}
-        />
-      )}
+      <CreateProjectModalForm
+        isOpen={showCreateProjectFormModal}
+        isLoading={changeProjects.isLoading}
+        errors={changeProjects.error?.response?.data}
+        onSubmit={changeProjects.mutate}
+        onClose={toggleModal}
+      />
     </>
   );
 }
