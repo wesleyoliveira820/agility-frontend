@@ -2,7 +2,6 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 
 import appConfig from '../config/app.config';
-import ws from './websocket';
 
 import { getRefreshToken, getToken, storeTokens } from '../utils/auth-methods';
 
@@ -72,8 +71,6 @@ api.interceptors.response.use(
               storeTokens(token, refresh_token);
 
               api.defaults.headers.Authorization = `Bearer ${token}`;
-
-              ws.withJwtToken(token).connect();
 
               processQueue(null, token);
             })

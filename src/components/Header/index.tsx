@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AiOutlineUserAdd } from 'react-icons/ai';
+import { useContextSelector } from 'use-context-selector';
 
 import Avatar from '../Avatar';
 
@@ -12,9 +13,9 @@ import {
 import logo from '../../assets/global/logo.svg';
 import settings from '../../assets/global/settings.svg';
 import ModalSettings from './ModalSettings';
-import { useProject } from '../../contexts/project-context';
 import { useAuth } from '../../hooks/use-auth';
 import { IconButton } from '../IconButton';
+import { ProjectContext } from '../../contexts/project/context';
 
 interface IHeaderProps {
   toggleInviteModal?: () => void;
@@ -22,7 +23,8 @@ interface IHeaderProps {
 
 function Header({ toggleInviteModal }: IHeaderProps) {
   const { user } = useAuth();
-  const { project } = useProject();
+  const project = useContextSelector(ProjectContext, (state) => state?.project);
+
   const [toggleModalSettings, setToggleModalSettings] = useState(false);
 
   function handleToggleModalsettings() {

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import ProjectProvider from '../../contexts/project-context';
 
 import Header from '../../components/Header';
 import ModalInviteMember from './components/ModalInviteMember';
 import Board from './components/Board';
 import { Loading } from './components/Loading';
+import { ProjectProvider } from '../../contexts/project/context';
 
 function Kanban() {
   const [toggleInviteModal, setToggleInviteModal] = useState(false);

@@ -1,5 +1,5 @@
 import { Story, Meta } from '@storybook/react';
-import type { ListProps } from '../../../../contexts/project-context';
+import { List as ListProps } from '../../../../contexts/project/types';
 import List from './index';
 
 const Template: Story<ListProps> = (args) => <List {...args} />;

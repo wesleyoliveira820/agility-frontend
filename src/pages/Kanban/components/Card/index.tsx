@@ -1,10 +1,10 @@
 import convertDate from '../../../../utils/convert-date-to-string';
-import type { CardProps } from '../../../../contexts/project-context';
 
 import { Container } from './styles';
 
 import dotsHorizontal from '../../../../assets/kanban/dots-horizontal.svg';
 import calendar from '../../../../assets/kanban/calendar.svg';
+import { Card as CardProps } from '../../../../contexts/project/types';
 
 function Card({ title, created_at }: CardProps) {
   return (

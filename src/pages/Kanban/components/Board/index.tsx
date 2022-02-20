@@ -1,33 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
 import List from '../List';
 import AddListForm from '../addListForm';
+import { ProjectContext } from '../../../../contexts/project/context';
 
 import { Container, ButtonAddList } from './styles';
-import { useProject } from '../../../../contexts/project-context';
-
-type ParamsProps = {
-  projectId: string;
-}
 
 function Board() {
-  const { projectId } = useParams<ParamsProps>();
-  const { getCurrentProject, lists } = useProject();
+  const lists = useContextSelector(ProjectContext, (state) => state.lists);
   const [showListForm, setShowListForm] = useState(false);
 
   function toggleListForm() {
     setShowListForm(!showListForm);
   }
 
-  useEffect(() => {
-    if (!projectId) return;
-    getCurrentProject(projectId);
-  }, []);
-
   return (
     <Container>
-      {lists.map((list) => (
+      {lists?.map((list) => (
         <List
           key={list.id}
           {...list}

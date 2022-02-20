@@ -1,11 +1,14 @@
+import { useContextSelector } from 'use-context-selector';
+
 import { ProgressBar } from '../ProgressBar';
 import { Container, Content } from './styles';
 
 import logoImg from '../../../../assets/global/logo-icon.svg';
-import { useProject } from '../../../../contexts/project-context';
+import { ProjectContext } from '../../../../contexts/project/context';
 
 function Loading() {
-  const { progress, isLoading } = useProject();
+  const isLoading = useContextSelector(ProjectContext, (state) => state.isLoading);
+  const progress = useContextSelector(ProjectContext, (state) => state.progress);
 
   if (isLoading) {
     return (

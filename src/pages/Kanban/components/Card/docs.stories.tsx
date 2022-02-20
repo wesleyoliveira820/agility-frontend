@@ -1,6 +1,7 @@
 import { Story, Meta } from '@storybook/react';
+
+import type { Card as CardProps } from '../../../../contexts/project/types';
 import Card from './index';
-import type { CardProps } from '../../../../contexts/project-context';
 
 const Template: Story<CardProps> = (args) => <Card {...args} />;
 
