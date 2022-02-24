@@ -5,7 +5,6 @@ import { ToastContainer } from 'react-toastify';
 import { QueryClientProvider } from 'react-query';
 
 import AuthProvider from './contexts/auth-context';
-import EmailProvider from './contexts/email-context';
 import Routes from './routes';
 import lightTheme from './themes/light';
 
@@ -18,11 +17,9 @@ function App() {
       <ThemeProvider theme={lightTheme}>
         <ToastContainer style={{ zIndex: 3 }} />
         <AuthProvider>
-          <EmailProvider>
-            <QueryClientProvider client={queryClient}>
-              <Routes />
-            </QueryClientProvider>
-          </EmailProvider>
+          <QueryClientProvider client={queryClient}>
+            <Routes />
+          </QueryClientProvider>
         </AuthProvider>
         <GlobalStyle />
       </ThemeProvider>

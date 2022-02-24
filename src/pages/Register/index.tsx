@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 
 import InputText from '../../components/InputText';
 import Button from '../../components/Button';
-import { useEmail } from '../../contexts/email-context';
 
 import Modal from './Modal';
 import AuthPageLayout from '../../layouts/AuthPage';
@@ -33,7 +32,6 @@ type ApiValidationProps = {
 function Register() {
   const formRef = useRef<FormHandles>(null);
 
-  const { email, clearEmail } = useEmail();
   const [mainRequestIsRunning, setMainRequestIsRunning] = useState(false);
   const [showConfirmRegisterModal, setShowConfirmRegisterModal] = useState(false);
 
@@ -58,7 +56,6 @@ function Register() {
 
       formRef.current?.reset();
 
-      clearEmail();
       setMainRequestIsRunning(false);
       setShowConfirmRegisterModal(true);
     } catch (error: any) {
@@ -89,7 +86,7 @@ function Register() {
 
           <Form ref={formRef} onSubmit={handleSubmitForm}>
             <InputText name="name" placeholder="Nome" autoFocus />
-            <InputText name="email" placeholder="Email" defaultValue={email} />
+            <InputText name="email" placeholder="Email" />
             <InputText type="password" name="password" placeholder="Senha" />
             <InputText
               type="password"

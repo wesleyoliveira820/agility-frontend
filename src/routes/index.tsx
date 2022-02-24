@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes as Routers, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-import Home from '../pages/Home';
 import Register from '../pages/Register';
 import EmailVerification from '../pages/EmailVerification';
 import Login from '../pages/Login';
@@ -20,9 +20,7 @@ function Routes() {
         <Route
           path="/"
           element={(
-            <GuestRoute>
-              <Home />
-            </GuestRoute>
+            <Navigate to="/login" />
           )}
         />
         <Route
