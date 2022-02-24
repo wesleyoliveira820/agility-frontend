@@ -2,6 +2,7 @@ import {
   addCardInListLabel,
   addListInBoardLabel,
   loadingProjectLabel,
+  moveCardLabel,
   progressLoadingProjectLabel,
   setupProjectLabel,
 } from './constants';
@@ -11,6 +12,7 @@ import {
   Card,
   getProjectResponse,
   List,
+  MoveCardProps,
 } from './types';
 
 export function setupProjectAction(project: getProjectResponse): ActionProps {
@@ -49,5 +51,16 @@ export function addListInBoardAction(list: List): ActionProps {
   return {
     type: addListInBoardLabel,
     payload: list,
+  };
+}
+
+export function moveCardAction({ from_list, to_list, card_id }: MoveCardProps): ActionProps {
+  return {
+    type: moveCardLabel,
+    payload: {
+      from_list,
+      to_list,
+      card_id,
+    },
   };
 }

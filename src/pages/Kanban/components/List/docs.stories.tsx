@@ -19,21 +19,25 @@ const cards = [
   {
     id: '1',
     title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    position: 1,
     created_at: 'Jun 12 11:06:58 +00',
   },
   {
     id: '2',
     title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    position: 2,
     created_at: 'Jun 12 11:06:58 +00',
   },
   {
     id: '3',
     title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    position: 3,
     created_at: 'Jun 12 11:06:58 +00',
   },
   {
     id: '4',
     title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    position: 4,
     created_at: 'Jun 12 11:06:58 +00',
   },
 ];

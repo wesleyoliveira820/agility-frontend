@@ -1,6 +1,6 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEmail } from '../../../../contexts/email-context';
 
 import { Container, Content, Form } from './styles';
@@ -8,7 +8,7 @@ import illustration from '../../../../assets/home/illustration.png';
 
 function Hero() {
   const { handleEmail } = useEmail();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
 
   function onSubmitForm(event: FormEvent) {
@@ -18,7 +18,7 @@ function Hero() {
 
     handleEmail(email);
 
-    history.push('/register');
+    navigate('register');
   }
 
   function onChangeInput(event: ChangeEvent<HTMLInputElement>) {

@@ -1,23 +1,14 @@
-import { FC } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/use-auth';
 
-interface IRouteProps {
-  component: FC;
-  path: string;
-  exact?: boolean;
+interface GuestRouteProps {
+  children: JSX.Element;
 }
 
-function AuthRoute({ ...props }: IRouteProps) {
+function GuestRoute({ children }: GuestRouteProps) {
   const { isLogged } = useAuth();
 
-  return !isLogged()
-    ? (<Route {...props} />)
-    : (<Redirect to="/projects" />);
+  return !isLogged() ? children : <Navigate to="/projects" />;
 }
 
-AuthRoute.defaultProps = {
-  exact: false,
-};
-
-export default AuthRoute;
+export { GuestRoute };

@@ -1,5 +1,6 @@
 import { ThemeProvider } from 'styled-components';
 import { MemoryRouter } from 'react-router-dom';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import GlobalStyle from '../src/styles/global';
 import lightTheme from '../src/themes/light';
@@ -20,7 +21,9 @@ export const decorators = [
     <ThemeProvider theme={lightTheme}>
       <AuthProvider>
         <MemoryRouter>
-          <Story />
+          <DragDropContext>
+            <Story />
+          </DragDropContext>
         </MemoryRouter>
       </AuthProvider>
       <GlobalStyle />

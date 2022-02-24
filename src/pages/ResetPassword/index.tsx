@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
@@ -25,7 +25,7 @@ type SuccessApi = AxiosResponse<{message: string}>
 function ResetPassword() {
   const formRef = useRef<FormHandles>(null);
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   async function validateData(payload: IFormProps) {
@@ -58,8 +58,8 @@ function ResetPassword() {
       toast.success(response.data.message);
 
       return true;
-    } catch (_error) {
-      const { response }: AxiosError<{message: string}> = _error;
+    } catch (error: any) {
+      const { response }: AxiosError<{message: string}> = error;
 
       if (response?.status === 404) {
         toast.error('Este link de verificação é inválido.');
@@ -88,7 +88,7 @@ function ResetPassword() {
       return setIsLoading(false);
     }
 
-    history.push('/login');
+    navigate('/login');
   };
 
   return (

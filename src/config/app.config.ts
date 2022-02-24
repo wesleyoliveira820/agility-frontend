@@ -11,10 +11,10 @@ export default {
     },
     refresh_token: {
       name: 'agility.refresh-token',
-      expires: 30, // Value in days
+      expires: 15 / oneDayInMinutes, // 15 minutes in days
     },
 
     path: '/',
-    sameSite: 'lax' as 'lax' | 'strict' | 'Strict' | 'Lax' | 'none' | 'None' | undefined,
+    sameSite: 'lax',
   },
 };

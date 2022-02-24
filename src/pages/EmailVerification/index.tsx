@@ -31,8 +31,8 @@ function EmailVerification() {
       });
 
       setMessage(response.data.message);
-    } catch (_error) {
-      const { response }: ErrorApi = _error;
+    } catch (error: any) {
+      const { response }: ErrorApi = error;
 
       if (response?.status === 404) {
         return setMessage('Este link de verificação é inválido.');

@@ -1,23 +1,14 @@
-import { FC } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/use-auth';
 
-interface IRouteProps {
-  component: FC;
-  path: string;
-  exact?: boolean;
+interface PrivateRouteProps {
+  children: JSX.Element;
 }
 
-function PrivateRoute({ ...props }: IRouteProps) {
+function PrivateRoute({ children }: PrivateRouteProps) {
   const { isLogged } = useAuth();
 
-  return isLogged()
-    ? (<Route {...props} />)
-    : (<Redirect to="/login" />);
+  return isLogged() ? children : <Navigate to="/login" />;
 }
 
-PrivateRoute.defaultProps = {
-  exact: false,
-};
-
-export default PrivateRoute;
+export { PrivateRoute };

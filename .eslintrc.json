@@ -5,7 +5,8 @@
   },
   "extends": [
     "plugin:react/recommended",
-    "airbnb"
+    "airbnb",
+    "plugin:storybook/recommended"
   ],
   "globals":{
     "JSX": true
@@ -31,7 +32,9 @@
     "react/require-default-props": "off",
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
+    "arrow-body-style": ["off", "as-needed"],
     "no-unused-vars": "off",
+    "react/jsx-no-bind": "off",
     "camelcase": "off",
     "consistent-return": "off",
     "jsx-a11y/no-autofocus": "off",

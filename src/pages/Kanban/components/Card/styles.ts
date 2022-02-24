@@ -6,8 +6,12 @@ export const Container = styled.div`
 
   border-radius: 5px;
 
+  margin-bottom: 16px;
+
   background-color: ${(props) => props.theme.colors.base.secondary};
   box-shadow: 0 1px 3px 0 rgba(206, 218, 230, 0.8);
+
+  transition: background-color 0.2s ease;
 
   header {
     display: flex;

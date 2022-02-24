@@ -93,9 +93,8 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
 
-  padding: 16px 0 64px;
+  padding: 16px 17px 64px;
 
   overflow-y: auto;
 

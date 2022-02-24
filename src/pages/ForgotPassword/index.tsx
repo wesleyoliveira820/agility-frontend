@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
 
@@ -25,7 +25,7 @@ type SuccessApi = AxiosResponse<{ message: string }>
 
 function ForgotPassword() {
   const formRef = useRef<FormHandles>(null);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   async function sendEmailToApi(email: string) {
@@ -61,7 +61,7 @@ function ForgotPassword() {
 
     if (!sendEmail) return setIsLoading(false);
 
-    history.push('/login');
+    navigate('/login');
   };
 
   return (

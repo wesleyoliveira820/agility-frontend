@@ -11,10 +11,12 @@ import type { AxiosError, AxiosResponse } from 'axios';
 import axios from '../services/api';
 
 import {
-  userLogout,
   storeTokens,
   isLogged,
+  clearTokens,
 } from '../utils/auth-methods';
+
+import logoutEvent from '../utils/logout-event';
 
 interface AuthCredentialsProps {
   email: string;
@@ -34,7 +36,7 @@ type ResultLogin = { message?: string } | undefined;
 interface ContextProps {
   user: UserProps;
   login: (userPayload: AuthCredentialsProps) => Promise<ResultLogin>;
-  logout: () => Promise<void>;
+  logout: () => void;
 }
 
 interface ResponseApiProps {
@@ -59,10 +61,6 @@ function AuthProvider({ children }: ProviderProps) {
     setUser(response.data);
   }
 
-  useEffect(() => {
-    if (isLogged()) getAuthenticatedUser();
-  }, []);
-
   const login = useCallback(async (userPayload: AuthCredentialsProps): Promise<ResultLogin> => {
     try {
       const response: LoginAxiosResponse = await axios.post('auth/login', userPayload);
@@ -82,9 +80,22 @@ function AuthProvider({ children }: ProviderProps) {
     }
   }, []);
 
-  async function logout() {
-    await userLogout();
+  function logout() {
+    clearTokens();
+    window.location.href = '/login';
   }
+
+  useEffect(() => {
+    logoutEvent.subscribe(logout);
+
+    if (isLogged()) {
+      getAuthenticatedUser();
+    }
+
+    return () => {
+      logoutEvent.unsubscribe(logout);
+    };
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

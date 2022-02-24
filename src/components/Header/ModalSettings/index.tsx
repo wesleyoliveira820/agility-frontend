@@ -1,7 +1,6 @@
-import { useHistory } from 'react-router-dom';
-
 import arrowRight from '../../../assets/global/arrow-right.svg';
 import { useAuth } from '../../../hooks/use-auth';
+import api from '../../../services/api';
 
 import {
   Container,
@@ -12,11 +11,10 @@ import {
 
 function ModalSettings() {
   const auth = useAuth();
-  const history = useHistory();
 
   async function handleLogout() {
-    await auth.logout();
-    history.push('/login');
+    await api.delete('logout');
+    auth.logout();
   }
 
   return (

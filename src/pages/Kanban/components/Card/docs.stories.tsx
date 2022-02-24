@@ -1,4 +1,5 @@
 import { Story, Meta } from '@storybook/react';
+import { Droppable } from 'react-beautiful-dnd';
 
 import type { Card as CardProps } from '../../../../contexts/project/types';
 import Card from './index';
@@ -14,6 +15,15 @@ Default.args = {
 export default {
   title: 'Data/Task Card',
   component: Card,
+  decorators: [
+    (Component) => (
+      <Droppable droppableId="123">
+        {() => (
+          <Component />
+        )}
+      </Droppable>
+    ),
+  ],
   parameters: {
     docs: {
       description: {

@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 export type Card = {
   id: string;
   title: string;
+  position: number;
   created_at: string;
 }
 
@@ -35,9 +36,9 @@ export interface StateProps {
   isLoading: boolean;
 }
 
-export interface ActionProps {
+export interface ActionProps<T = any> {
   type: string;
-  payload?: any;
+  payload: T;
 }
 
 export interface ProjectProviderProps {
@@ -50,4 +51,19 @@ export interface getProjectResponse extends Project {
 
 export interface ActionsFN {
   [key: string]: (state: StateProps, action: ActionProps) => StateProps;
+}
+
+export interface ContextProps extends StateProps {
+  dispatch: (action: ActionProps) => void;
+}
+
+type ListPosition = {
+  list_id: string;
+  position: number;
+}
+
+export interface MoveCardProps {
+  from_list: ListPosition;
+  to_list: ListPosition;
+  card_id: string;
 }

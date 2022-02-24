@@ -3,7 +3,13 @@ import { toast } from 'react-toastify';
 
 import appConfig from '../config/app.config';
 
-import { getRefreshToken, getToken, storeTokens } from '../utils/auth-methods';
+import {
+  getRefreshToken,
+  getToken,
+  storeTokens,
+} from '../utils/auth-methods';
+
+import logoutEvent from '../utils/logout-event';
 
 interface QueueProps {
   onSuccess: (token: string) => void;
@@ -50,13 +56,13 @@ api.interceptors.response.use(
       );
     }
 
-    const originalRequest: AxiosRequestConfig = serverError.config;
-
     const statusError = serverError.response?.status;
 
     if (statusError === 401) {
       if (serverError.response?.data.error.name === 'InvalidJwtToken') {
         const refreshToken = getRefreshToken();
+
+        const originalRequest: AxiosRequestConfig = serverError.config;
 
         if (!isRefreshing) {
           isRefreshing = true;
@@ -86,7 +92,11 @@ api.interceptors.response.use(
           failedRequestsQueue.push({
             onSuccess: (token: string) => {
               originalRequest.headers.Authorization = `Bearer ${token}`;
-              resolve(api(originalRequest));
+
+              resolve(api({
+                ...originalRequest,
+                data: originalRequest.data ? JSON.parse(originalRequest.data) : '',
+              }));
             },
             onFailure: (failure: AxiosError | null) => {
               reject(failure);
@@ -94,6 +104,8 @@ api.interceptors.response.use(
           });
         });
       }
+
+      logoutEvent.notify();
     }
 
     return Promise.reject(serverError);

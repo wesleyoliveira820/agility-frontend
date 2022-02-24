@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Form } from '@unform/web';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import type { SubmitHandler } from '@unform/core';
@@ -23,7 +23,7 @@ interface IFormProps {
 
 function Login() {
   const auth = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({} as IFormProps);
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -39,7 +39,7 @@ function Login() {
       return;
     }
 
-    history.push('/projects');
+    navigate('/projects');
   };
 
   function onChangeInput(e: ChangeEvent<HTMLInputElement>) {

@@ -1,12 +1,13 @@
 import Cookies from 'js-cookie';
 import appConfig from '../config/app.config';
-import axios from '../services/api';
 
 const { cookies: cookieConfig } = appConfig;
 
+type SameSite = 'lax' | 'strict' | 'Strict' | 'Lax' | 'none' | 'None' | undefined;
+
 Cookies.withAttributes({
   path: cookieConfig.path,
-  sameSite: cookieConfig.sameSite,
+  sameSite: cookieConfig.sameSite as SameSite,
 });
 
 export function storeTokens(token: string, refresh_token: string) {
@@ -25,15 +26,13 @@ export function getToken() {
   return token;
 }
 
-export function getRefreshToken() {
-  return Cookies.get(cookieConfig.refresh_token.name);
-}
-
-export async function userLogout() {
-  await axios.delete('logout');
-
+export function clearTokens() {
   Cookies.remove(cookieConfig.token.name);
   Cookies.remove(cookieConfig.refresh_token.name);
+}
+
+export function getRefreshToken() {
+  return Cookies.get(cookieConfig.refresh_token.name);
 }
 
 export function isLogged() {

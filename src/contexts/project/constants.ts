@@ -9,3 +9,5 @@ export const progressLoadingProjectLabel = `${labelPrefix}/PROGRESS_LOADING_PROJ
 export const addCardInListLabel = `${labelPrefix}/ADD_CARD_IN_LIST`;
 
 export const addListInBoardLabel = `${labelPrefix}/ADD_LIST_IN_BOARD`;
+
+export const moveCardLabel = `${labelPrefix}/MOVE_CARD`;

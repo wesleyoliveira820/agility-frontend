@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 
@@ -20,7 +20,7 @@ type ErrorApi = AxiosError<IResponseApi>
 
 function AcceptInvite() {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   async function acceptInviteInApi() {
     const queryCode = new URLSearchParams(location.search).get('code');
@@ -32,13 +32,13 @@ function AcceptInvite() {
 
       toast.success(response.data.message);
 
-      history.replace('/projects');
-    } catch (_error) {
-      const { response }: ErrorApi = _error;
+      navigate('/projects');
+    } catch (error: any) {
+      const { response }: ErrorApi = error;
 
       toast.error(response?.data.message);
 
-      history.replace('/projects');
+      navigate('/projects');
     }
   }
 
