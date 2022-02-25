@@ -11,7 +11,7 @@ export default {
     },
     refresh_token: {
       name: 'agility.refresh-token',
-      expires: 15 / oneDayInMinutes, // 15 minutes in days
+      expires: 2, // Value in days
     },
 
     path: '/',
