@@ -6,10 +6,12 @@
   "extends": [
     "plugin:react/recommended",
     "airbnb",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "plugin:jest/recommended"
   ],
   "globals":{
-    "JSX": true
+    "JSX": true,
+    "jest/globals": true
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -21,9 +23,15 @@
   },
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "jest"
   ],
   "rules": {
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/react-in-jsx-scope": "off",
