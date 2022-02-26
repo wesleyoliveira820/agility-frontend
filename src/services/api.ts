@@ -95,7 +95,7 @@ api.interceptors.response.use(
 
               resolve(api({
                 ...originalRequest,
-                data: originalRequest.data ? JSON.parse(originalRequest.data) : '',
+                data: JSON.parse(originalRequest.data) || '',
               }));
             },
             onFailure: (failure: AxiosError | null) => {
