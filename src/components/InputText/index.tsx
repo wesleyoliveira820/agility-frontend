@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
 
-import { Container } from './styles';
+import * as S from './styles';
 import { InputProps } from './input-text.types';
 
 function InputText({
@@ -31,7 +31,7 @@ function InputText({
   }, [fieldName, registerField]);
 
   return (
-    <Container error={!!error} bg={bg}>
+    <S.Container error={!!error} bg={bg}>
       <input
         className="input-text"
         ref={inputRef}
@@ -41,7 +41,7 @@ function InputText({
         {...rest}
       />
       {error && <strong className="error-text">{error}</strong>}
-    </Container>
+    </S.Container>
   );
 }
 
